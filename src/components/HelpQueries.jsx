@@ -1,12 +1,24 @@
 import React from 'react'
+import useHelp from '../hooks/useHelp'
+import { useSelector } from 'react-redux'
 
-const people = [
-    { id:1, name: 'Lindsay Walton', email: 'lindsay.walton@example.com', mobile: '987654345',  Query: 'Lorem ipsum dolor sit amet.' },
-    { id:2, name: 'Lindsay Walton', email: 'lindsay1.walton@example.com', mobile: '987654345',  Query: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia, vitae?' },
-    // More people...
-  ]
+// const people = [
+//     { id:1, name: 'Lindsay Walton', email: 'lindsay.walton@example.com', mobile: '987654345',  Query: 'Lorem ipsum dolor sit amet.' },
+//     { id:2, name: 'Lindsay Walton', email: 'lindsay1.walton@example.com', mobile: '987654345',  Query: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia, vitae?' },
+//     // More people...
+//   ]
 
 const HelpQueries = () => {
+
+ 
+ 
+
+  const {help, isLoading } = useSelector((state) => state.help.value)
+
+  const people = help
+
+
+  //
 
   const handleQueryRemove =(id) => {
     console.log(id)
@@ -53,7 +65,7 @@ const HelpQueries = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {people.map((person) => (
+                    {people?.map((person) => (
                       <tr key={person.email}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
                           {person.id}

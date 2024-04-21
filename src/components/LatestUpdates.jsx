@@ -1,11 +1,17 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
-const updtaes = [
-    {id: 1, name: 'defencejobs.in'},
-    {id:2, name: 'superJobs.nz'}
-]
+// const updtaes = [
+//     {id: 1, name: 'defencejobs.in'},
+//     {id:2, name: 'superJobs.nz'}
+// ]
 
 const LatestUpdates = () => {
+
+    const { latest, isLoading } = useSelector((state) => state.help.value)
+
+    const updtaes = latest
+
 
     const [latestText,setLatestText] = useState('')
 

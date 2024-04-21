@@ -15,9 +15,47 @@ import HelpQueries from "../components/HelpQueries";
 import LatestUpdates from "../components/LatestUpdates";
 import BannerUpload from "../components/BannerUpload";
 import ChangePasswordAdmin from "../components/ChangePasswordAdmin";
+import JobQueries from "../components/JobQueries";
+import WithdrawRequest from "../components/WithdrawRequest";
+import useAdminAffilateList from "../hooks/useAdminAffiliateList";
+import { useSelector } from "react-redux";
+import useHelp from "../hooks/useHelp";
+import useJob from "../hooks/useJob";
+import useWithdraw from "../hooks/useWithdraw";
+import useLatest from "../hooks/useLatest";
 
 
 const AdminDashboard = () => {
+
+  const { fetchAffilateList } = useAdminAffilateList()
+//  const { affiliateUsers, isLoading }= useSelector((state) => state.affiliateUsers.value)
+const data = fetchAffilateList()
+//  console.log(affiliateUsers)
+
+// fetch help queries
+const { fetchHelpList } = useHelp()
+
+const helpData = fetchHelpList()
+
+//
+
+// fetch job Queries
+ const { fetchJobList } = useJob()
+
+ const jobData = fetchJobList()
+//
+
+// fetch withdraw Querry
+const { fetchWithdrawList} = useWithdraw()
+const withdrawData = fetchWithdrawList()
+//
+
+// fetch latest updates section
+const { fetchLatestList } = useLatest()
+const latestData = fetchLatestList()
+//
+
+  // console.log(data)
 
   // page code => afflist , help, updates, banner, pass
   const [pageState,setPageState] = useState('afflist')
@@ -45,6 +83,8 @@ const AdminDashboard = () => {
           <li className=" mt-5 cursor-pointer">Home</li>
           <li onClick={()=> setPageState('afflist')} className=" cursor-pointer">Affailate List</li>
           <li onClick={()=> setPageState('help')} className=" cursor-pointer">Help Queries</li>
+          <li onClick={()=> setPageState('job')} className=" cursor-pointer">Job Queries</li>
+          <li onClick={()=> setPageState('withdraw')} className=" cursor-pointer">Withdraw Request</li>
           <li onClick={()=> setPageState('updates')} className=" cursor-pointer">Latest Updates</li>
           <li onClick={()=> setPageState('banner')} className=" cursor-pointer">Banner Upload</li>
           <li onClick={()=> setPageState('pass')} className=" cursor-pointer">Change Password</li>
@@ -60,6 +100,8 @@ const AdminDashboard = () => {
         {pageState === 'updates' && <LatestUpdates />}
         {pageState === 'banner' && <BannerUpload />}
         {pageState === 'pass' && <ChangePasswordAdmin />}
+        {pageState === 'job' && <JobQueries />}
+        {pageState === 'withdraw' && <WithdrawRequest />}
 
         
 

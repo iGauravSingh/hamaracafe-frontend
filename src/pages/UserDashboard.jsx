@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from "../components/Button";
+import { useSelector } from "react-redux";
 
 import { TbHandClick } from "react-icons/tb";
 import { FaInfo } from "react-icons/fa";
@@ -11,20 +12,71 @@ import Modal from "../components/Modal";
 import UserProfile from "./UserProfile";
 import CopyCheck from "../components/CopyCheck";
 
+import { clearUser } from "../features/userSlice";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import Unauthorized from "./Unauthorized";
+
+
+
 
 const UserDashboard = () => {
 
-    const encodedText = `https://hamaracafe.com/job-work-form2/?coupon=code007`
+  const navigate = useNavigate()
+
+  const user = useSelector((state) => state.user.value)
+
+  const { logout } = useAuth()
+
+  console.log(user.user)
+
+  if(!user.user){
+    return <Unauthorized />
+  }
+
+  const userData = user?.user
+
+  //console.log(user)
+
+    const encodedText = `https://hamaracafe.com/job-work-form2/?coupon=${userData.affiliateCode}`
+
+    const shareText = `Fill Forms From Home
+    https://hamaracafe.com/job-work-form2/?coupon=${userData.affiliateCode}`
 
   const handleShare = () => {
     console.log("share");
     
-    window.open(`https://web.whatsapp.com/send?text=${encodedText}`);
+    window.open(`https://web.whatsapp.com/send?text=${shareText}`);
   };
 
   const handleCopy = () => {
     console.log("copy");
   };
+
+  const handleLogout = () => {
+    // clear redux  // clear cokie
+     
+    logout()
+
+    // redirect
+    navigate('/signin')
+  }
+
+
+  // Widthdrawl form state
+  const [drawAmt,setDrawAmt] = useState(0)
+  const [draw,setDraw] = useState(false)
+  const handleWithdraw = () => {
+    setDraw(prevState => !prevState)
+  }
+
+  const handleWithdrawRequest = () => {
+    setDraw(false)
+    // check if drawAmt is more then net earning then send error
+    
+  }
+
+  //
 
   const handleHelpmessage  = () => {
     handleCloseHelp()
@@ -66,14 +118,14 @@ const handleCloseEarning = () => setIsOpenEarning(false);
       {/* dashboard leftside board  */}
       <div className="w-screen md:w-[20%] h-[300px] md:min-h-screen bg-[#e62e56] text-white">
         <div className="flex flex-col  items-center mt-4">
-        <img className=' w-10 h-10' src="https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg" alt="default profile" />
-        <h3 className="">Welcome user</h3>
+        <img className=' w-10 h-10' src={userData.imageUrl} alt="default profile" />
+        <h3 className="">Welcome {userData.name}</h3>
         
         </div>
         <ul className=" w-full flex flex-col gap-6 items-center font-bold text-xl">
           <li className=" mt-5 cursor-pointer">Home</li>
           <li className=" cursor-pointer" onClick={handleOpenProfile}>Profile</li>
-          <li className=" cursor-pointer">Logout</li>
+          <li onClick={handleLogout} className=" cursor-pointer">Logout</li>
         </ul>
       </div>
 
@@ -81,7 +133,7 @@ const handleCloseEarning = () => setIsOpenEarning(false);
       <div className="w-screen md:w-[80%] min-h-screen">
         {/* code and share and copy */}
         <div className=" flex justify-between items-center  ml-6 mr-4 mt-7">
-          <p className=" text-lg">Affailate Code as9sd7889</p>
+          <p className=" text-lg">Affailate Code {userData?.affiliateCode}</p>
           <div className="flex gap-6">
             
             <CopyCheck textToCopy={encodedText} />
@@ -92,10 +144,10 @@ const handleCloseEarning = () => setIsOpenEarning(false);
         {/* banner  */}
         <div>
           <ul className=" flex justify-center gap-2 mt-6 ">
-            <li className=" px-2 py-2 bg-green-700 text-white cursor-pointer">Banner - 1</li>
-            <li className=" px-2 py-2 bg-blue-700 text-white cursor-pointer">Banner - 2</li>
-            <li className=" px-2 py-2 bg-red-700 text-white cursor-pointer">Banner - 3</li>
-            <li className=" px-2 py-2 bg-yellow-400 text-white cursor-pointer">Banner - 4</li>
+            <li className=" px-2 py-2 bg-green-700 text-white cursor-pointer">Instagram</li>
+            <li className=" px-2 py-2 bg-blue-700 text-white cursor-pointer">Youtube</li>
+            <li className=" px-2 py-2 bg-red-700 text-white cursor-pointer">Website</li>
+            <li className=" px-2 py-2 bg-yellow-400 text-white cursor-pointer">Other</li>
           </ul>
         </div>
 
@@ -109,7 +161,7 @@ const handleCloseEarning = () => setIsOpenEarning(false);
             <TbHandClick size={30} color="#e62e56" />
             <h4>Total Clicks</h4>
             </div>
-            <p>10</p>
+            <p>{userData.totalClicks}</p>
           </div>
 
           {/* card 2  */}
@@ -120,7 +172,7 @@ const handleCloseEarning = () => setIsOpenEarning(false);
             <FaInfo size={30} color="#e62e56" />
             <h4>Total Inquiries</h4>
             </div>
-            <p>10</p>
+            <p>{userData.totalInquiry}</p>
           </div>
 
           {/* card 3  */}
@@ -131,7 +183,7 @@ const handleCloseEarning = () => setIsOpenEarning(false);
             <FaGear size={30} color="#e62e56" />
             <h4>Work Going On</h4>
             </div>
-            <p>10</p>
+            <p>{userData.workgoingon}</p>
           </div>
 
         {/* card 4  */}
@@ -142,7 +194,7 @@ const handleCloseEarning = () => setIsOpenEarning(false);
             <HiOutlineSpeakerphone size={30} color="#e62e56" />
             <h4>Latest Updates</h4>
             </div>
-            <p>10</p>
+            <p></p>
           </div>
 
           {/* card 5  */}
@@ -153,7 +205,7 @@ const handleCloseEarning = () => setIsOpenEarning(false);
             <BiSupport size={30} color="#e62e56" />
             <h4>Help and Supports</h4>
             </div>
-            <p>10</p>
+            <p></p>
           </div>
 
           {/* card 6  */}
@@ -164,7 +216,7 @@ const handleCloseEarning = () => setIsOpenEarning(false);
             <GiMoneyStack size={30} color="#e62e56" />
             <h4>Earning</h4>
             </div>
-            <p>10</p>
+            <p>{userData.totalMoney}</p>
           </div>
 
           
@@ -175,7 +227,7 @@ const handleCloseEarning = () => setIsOpenEarning(false);
         {/* Modal Profile 
           <button onClick={handleOpen}>Open Modal</button> */}
             <Modal isOpen={isOpenProfile} onClose={handleCloseProfile}>
-                <UserProfile />
+                <UserProfile imageUrl={userData.imageUrl} userName={userData.name} affiliateCode={userData.affiliateCode} website={userData.website} youtube={userData.youtube} instagram={userData.instagram} />
             </Modal>
 
         {/* Modal Latest Updates  */}
@@ -198,17 +250,20 @@ const handleCloseEarning = () => setIsOpenEarning(false);
         <Modal isOpen={isOpenEarning} onClose={handleCloseEarning}>
             <div className=" w-[300px] flex flex-col gap-4 mt-2">
                 <div className=" flex justify-between">
-                    <p>Total Money Earned</p>
+                    <p>Total Money</p>
                     <p className=" font-bold">₹400</p>
                 </div>
-                <div className=" flex justify-between">
-                    <p>Money Withdrawn</p>
-                    <p className=" font-bold">₹200</p>
+                <div className=" flex flex-col justify-center">
+                    <button onClick={handleWithdraw} className=' border-2 border-[#e62e56] px-1 py-1 text-[#e62e56] cursor-pointer mt-2'>Withdraw</button>
+                    {draw && (
+                    <div className=" mt-4 flex flex-col gap-4">
+                      <h3 className=" text-center">Enter The Amount</h3>
+                      <input value={drawAmt} onChange={(e)=> setDrawAmt(e.target.value)} className=" outline-none border-2 border-[#e62e56]" type="text" />
+                      <button onClick={handleWithdrawRequest} className=' border-2 border-[#e62e56] px-1 py-1 text-[#e62e56] cursor-pointer mt-2'>Request for withdraw</button>
+                    </div>
+                  )}
                 </div>
-                <div className=" flex justify-between">
-                    <p>Money Remaning</p>
-                    <p className=" font-bold">₹200</p>
-                </div>
+                
             </div>
         </Modal>
 
