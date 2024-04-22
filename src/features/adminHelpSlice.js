@@ -16,6 +16,11 @@ export const adminHelpSlice = createSlice({
             state.value.help = action.payload;
             state.value.isLoading = false
         },
+        deleteHelp: (state, action) => {
+            const id = action.payload;
+            state.value.help = state.value.help.filter(news => news.id !== id);
+            state.value.isLoading = false;
+          },
         clearHelp : (state) => {
             state.value.help = null;
             state.value.isLoading = false
@@ -23,5 +28,5 @@ export const adminHelpSlice = createSlice({
     }
 })
 
-export const { setHelp, clearHelp } = adminHelpSlice.actions;
+export const { setHelp, deleteHelp ,clearHelp } = adminHelpSlice.actions;
 export default adminHelpSlice.reducer

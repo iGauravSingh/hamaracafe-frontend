@@ -1,6 +1,7 @@
 import React from 'react'
 import useHelp from '../hooks/useHelp'
 import { useSelector } from 'react-redux'
+import { format } from 'date-fns';
 
 // const people = [
 //     { id:1, name: 'Lindsay Walton', email: 'lindsay.walton@example.com', mobile: '987654345',  Query: 'Lorem ipsum dolor sit amet.' },
@@ -15,13 +16,19 @@ const HelpQueries = () => {
 
   const {help, isLoading } = useSelector((state) => state.help.value)
 
-  const people = help
+  const { deleteHelpQuerry } = useHelp()
 
 
-  //
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'MMMM dd, yyyy hh:mm a');
+  };
+
+  
 
   const handleQueryRemove =(id) => {
     console.log(id)
+    deleteHelpQuerry(id)
   }
   
     return (
@@ -48,6 +55,9 @@ const HelpQueries = () => {
                         id
                       </th>
                       <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        Date
+                      </th>
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                         Name
                       </th>
                       <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
@@ -65,15 +75,17 @@ const HelpQueries = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {people?.map((person) => (
+                    {help?.map((person) => (
                       <tr key={person.email}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
                           {person.id}
                         </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{formatDate(person.createdAt)}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.name}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.email}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.mobile}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.Query}</td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.affiliateCode}</td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.query}</td>
                         
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
                           <p onClick={()=>handleQueryRemove(person.id)} className="text-[#e62e56] hover:text-[#a51937e1] cursor-pointer">

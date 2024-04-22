@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import SemectManager from './SemectManager';
 import { useSelector } from 'react-redux';
+import { format } from 'date-fns';
+import useJob from '../hooks/useJob';
 
 
 // const people = [
@@ -15,12 +17,18 @@ const JobQueries = () => {
 
   const { job, isLoading } = useSelector((state) => state.job.value)
 
-  const people = job
+  const { deleteJobQuerry } = useJob()
 
     const [selectedName, setSelectedName] = useState(names[0]);
 
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      return format(date, 'MMMM dd, yyyy hh:mm a');
+    };
+
     const handleQueryRemove =(id) => {
         console.log(id)
+        deleteJobQuerry(id)
       }
 
       const handleManager = () => {
@@ -51,6 +59,9 @@ const JobQueries = () => {
                             id
                           </th>
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                            Request Time
+                          </th>
+                          <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                             Name
                           </th>
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
@@ -68,14 +79,15 @@ const JobQueries = () => {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200 bg-white">
-                        {people.map((person) => (
+                        {job?.map((person) => (
                           <tr key={person.email}>
                             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
                               {person.id}
                             </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{formatDate(person.createdAt)}</td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.name}</td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.mobile}</td>
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.affailate}</td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.affiliateCode}</td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><SemectManager jobid={person.id} /></td>
                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
                               <p onClick={()=>handleQueryRemove(person.id)} className="text-[#e62e56] hover:text-[#a51937e1] cursor-pointer">

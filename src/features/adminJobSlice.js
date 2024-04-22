@@ -16,6 +16,21 @@ export const adminJobSlice = createSlice({
             state.value.job = action.payload;
             state.value.isLoading = false
         },
+        deleteJob: (state, action) => {
+            const id = action.payload;
+            state.value.job = state.value.job.filter(jo => jo.id !== id);
+            state.value.isLoading = false;
+          },
+        //   this is fot final 
+        editJob: (state, action) => {
+            const editedJob = action.payload;
+            const index = state.value.job.findIndex(jo => jo.id === editedJob.id);
+
+            if(index !== -1){
+                state.value.job[index] = {...state.value.job[index], ...editedJob };
+            }
+            state.value.isLoading = false;
+        },
         clearJob : (state) => {
             state.value.job = null;
             state.value.isLoading = false
@@ -23,5 +38,5 @@ export const adminJobSlice = createSlice({
     }
 })
 
-export const { setJob, clearJob } = adminJobSlice.actions;
+export const { setJob, clearJob, deleteJob } = adminJobSlice.actions;
 export default adminJobSlice.reducer

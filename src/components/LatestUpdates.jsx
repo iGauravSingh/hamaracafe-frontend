@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import useLatest from '../hooks/useLatest'
 
 // const updtaes = [
 //     {id: 1, name: 'defencejobs.in'},
@@ -8,9 +9,11 @@ import { useSelector } from 'react-redux'
 
 const LatestUpdates = () => {
 
-    const { latest, isLoading } = useSelector((state) => state.help.value)
+    const { latest, isLoading } = useSelector((state) => state.latest.value)
 
-    const updtaes = latest
+    const { addLatestUpdates, deleteLatestUpdates } = useLatest()
+
+    console.log('from latUpp jsx',latest)
 
 
     const [latestText,setLatestText] = useState('')
@@ -20,15 +23,20 @@ const LatestUpdates = () => {
     }
 
     const handleAddLatest = () => {
-        console.log(latestText)
+        if(!latestText){
+            alert('cannot be empty')
+        }else {
+            addLatestUpdates({latestLink: latestText})
+        }
+        
     }
 
     const handleRemove = (id) => {
-        console.log(id)
+        deleteLatestUpdates(id)
     }
 
   return (
-    <div className=' font-serif px-4'>
+    <div className=' font-serif px-4 mb-9'>
         <div className="sm:flex-auto">
               <h1 className="text-base font-semibold leading-6 text-gray-900 mt-5">Latest Updates</h1>
               <p className="mt-2 text-sm text-gray-700">
@@ -44,9 +52,9 @@ const LatestUpdates = () => {
 
         {/* list of existing latest updates  */}
         <div className=' mt-10'>
-        {updtaes?.map((upp) => (
+        {latest?.map((upp) => (
             <div key={upp.id} className=' flex justify-between items-center gap-2 mt-2 mx-5'>
-                <p>{upp.name}</p>
+                <p>{upp.update}</p>
                 <p onClick={()=>handleRemove(upp.id)} className=' text-red-600 cursor-pointer'>Remove</p>
             </div>
         ))}

@@ -1,6 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { useForm } from "react-hook-form";
+import useJob from "../hooks/useJob";
 
+// toast related
+import { Transition } from "@headlessui/react";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { XCircleIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/20/solid";
+
+//
 
 
 /*
@@ -19,7 +27,22 @@ import { useForm } from "react-hook-form";
 */
 export default function AffailateJobWork() {
 
-    const [querycode, setQuerycode] = useState('def007')
+    const [querycode, setQuerycode] = useState('hamara/111')
+
+     //////// Button Loading
+  const [loadingJob, setLoadingHelp] = useState(false);
+
+  ////////
+
+    ///////toast state
+    const [show, setShow] = useState(false);
+
+    const [toastHead, setToastHead] = useState("");
+    const [toastMsg, setToastMsg] = useState("");
+  
+    /////////
+
+  const { addJobRequest } = useJob()
 
     
 
@@ -29,9 +52,17 @@ export default function AffailateJobWork() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log({...data,code: querycode});
-    alert("Registration submitted!");
+  const onSubmit = async (data) => {
+    setLoadingHelp(true)
+    const response = await addJobRequest({name: data.name, mobile: data.phone, affiliateCode: querycode})
+    if(response.success){
+      setToastHead("Success")
+      setToastMsg("Request Submitted")
+      setShow(true)
+    } else {
+      setToastHead("Error")
+      setToastMsg("Network Error")
+    }
   };
 
 
@@ -130,12 +161,22 @@ export default function AffailateJobWork() {
                         name="phone"
                         type="tel"
                         autoComplete="phone"
-                        {...register("phone", { required: true })}
+                        {...register("phone", {
+                          required: "Phone number is required",
+                          minLength: {
+                            value: 10,
+                            message: "Phone number must be 10 digits long"
+                          },
+                          maxLength: {
+                            value: 10,
+                            message: "Phone number must be 10 digits long"
+                          }
+                        })}
                         className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                       {errors.phone && (
                         <span className="text-red-500">
-                          Password is required
+                          {errors.phone.message}
                         </span>
                       )}
                     </div>
@@ -151,14 +192,7 @@ export default function AffailateJobWork() {
                       Affailate Code
                     </label>
                     <div className="mt-2">
-                      <input
-                        id="affcode"
-                        name="affcode"
-                        type="text"
-                        value={querycode}
-                       
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                      <p className="block w-full h-9 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">{querycode}</p>
                       
                     </div>
                   </div>
@@ -185,12 +219,20 @@ export default function AffailateJobWork() {
                   {/* </div> */}
 
                   <div>
-                    <button
+                    {/* <button
                       type="submit"
                       className="flex w-full justify-center rounded-md bg-[#e62e56] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#c54662] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Request To Apply
-                    </button>
+                    </button> */}
+                    <button
+                type="submit"
+                className={`flex w-full justify-center rounded-md bg-[#e62e56] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#c54662] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${
+                  loadingJob ? "pointer-events-none opacity-50" : ""
+                }`}
+              >
+                {loadingJob ? "Submitted!" : "Submit"}
+              </button>
                   </div>
                 </form>
               </div>
@@ -242,6 +284,68 @@ export default function AffailateJobWork() {
           />
         </div>
       </div>
+
+ {/* // Toast */}
+ <>
+        {/* Global notification live region, render this permanently at the end of the document */}
+        <div
+          aria-live="assertive"
+          className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+        >
+          <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
+            {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
+            <Transition
+              show={show}
+              as={Fragment}
+              enter="transform ease-out duration-300 transition"
+              enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+              enterTo="translate-y-0 opacity-100 sm:translate-x-0"
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                <div className="p-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      {toastHead === "Success" ? (
+                        <CheckCircleIcon
+                          className="h-6 w-6 text-green-400"
+                          aria-hidden="true"
+                        />
+                      ) : (
+                        <XCircleIcon
+                          className="h-6 w-6 text-red-400"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </div>
+                    <div className="ml-3 w-0 flex-1 pt-0.5">
+                      <p className="text-sm font-medium text-gray-900">
+                        {toastHead}
+                      </p>
+                      <p className="mt-1 text-sm text-gray-500">{toastMsg}</p>
+                    </div>
+                    <div className="ml-4 flex flex-shrink-0">
+                      <button
+                        type="button"
+                        className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        onClick={() => {
+                          setShow(false);
+                        }}
+                      >
+                        <span className="sr-only">Close</span>
+                        <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Transition>
+          </div>
+        </div>
+      </>
+
     </>
   );
 }

@@ -1,8 +1,8 @@
 import React, { useState, Fragment } from "react";
 import { useForm } from "react-hook-form";
-import { Transition } from '@headlessui/react'
-import { XCircleIcon } from '@heroicons/react/24/outline'
-import { XMarkIcon } from '@heroicons/react/20/solid'
+import { Transition } from "@headlessui/react";
+import { XCircleIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -22,39 +22,36 @@ import { useNavigate } from "react-router-dom";
   ```
 */
 export default function AffailateSignIn() {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
+  const [show, setShow] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
 
-  const [show, setShow] = useState(false)
-  const [errMsg, setErrMsg] = useState('')
+  const { login } = useAuth();
 
-  const { login } = useAuth()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-      } = useForm();
+  const onSubmit = async (data) => {
+    console.log(data);
+    const resp = await login(data);
+    if (resp?.user) {
+      // navigate to dashboard
+      navigate("/dashboard");
+    } else {
+      // display error
+      console.log(resp?.response?.data?.errors[0]?.msg);
+      setErrMsg(resp?.response?.data?.errors[0]?.msg);
+      setShow(true);
+    }
+  };
 
-      const onSubmit = async (data) => {
-        
-        console.log(data);
-        const resp = await login(data)
-        if(resp?.user){
-          // navigate to dashboard
-          navigate('/dashboard')
-
-        } else {
-          // display error
-          console.log(resp?.response?.data?.errors[0]?.msg)
-          setErrMsg(resp?.response?.data?.errors[0]?.msg)
-          setShow(true)
-        }
-      };
-
-    return (
-      <>
-        {/*
+  return (
+    <>
+      {/*
           This example requires updating your template:
   
           ```
@@ -62,70 +59,81 @@ export default function AffailateSignIn() {
           <body class="h-full">
           ```
         */}
-        <div className="flex min-h-full flex-1">
-          <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-            <div className="mx-auto w-full max-w-sm lg:w-96">
-              <div>
-                <img
-                  className="h-10 w-auto"
-                  src="https://i0.wp.com/hamaracafe.com/wp-content/uploads/2023/05/cropped-Red_Modern_Label_Logo-removebg-preview.png?fit=460%2C97&ssl=1"
-                  alt="Your Company"
-                />
-                <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                  Sign in to your account
-                </h2>
-                {/* <p className="mt-2 text-sm leading-6 text-gray-500">
+      <div className="flex min-h-full flex-1">
+        <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+          <div className="mx-auto w-full max-w-sm lg:w-96">
+            <div>
+              <img
+                className="h-10 w-auto"
+                src="https://i0.wp.com/hamaracafe.com/wp-content/uploads/2023/05/cropped-Red_Modern_Label_Logo-removebg-preview.png?fit=460%2C97&ssl=1"
+                alt="Your Company"
+              />
+              <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                Sign in to your account
+              </h2>
+              {/* <p className="mt-2 text-sm leading-6 text-gray-500">
                   Not a member?{' '}
                   <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                     Start a 14 day free trial
                   </a>
                 </p> */}
-              </div>
-  
-              <div className="mt-10">
-                <div>
-                  <form id="signinForm"
-                  onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                        Email address
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="email"
-                          name="email"
-                          type="email"
-                          autoComplete="email"
-                          {...register("email", { required: true })}
-                          className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        />
-                        {errors.email && (
+            </div>
+
+            <div className="mt-10">
+              <div>
+                <form
+                  id="signinForm"
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-6"
+                >
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Email address
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        {...register("email", { required: true })}
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                      {errors.email && (
                         <span className="text-red-500">Email is required</span>
                       )}
-                      </div>
                     </div>
-  
-                    <div>
-                      <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                        Password
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="password"
-                          name="password"
-                          type="password"
-                          autoComplete="current-password"
-                          {...register("password", { required: true })}
-                          className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        />
-                        {errors.password && (
-           <span className="text-red-500">Password is required</span>
-         )}
-                      </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Password
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        autoComplete="current-password"
+                        {...register("password", { required: true })}
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                      {errors.password && (
+                        <span className="text-red-500">
+                          Password is required
+                        </span>
+                      )}
                     </div>
-  
-                    {/* <div className="flex items-center justify-between"> */}
-                      {/* <div className="flex items-center">
+                  </div>
+
+                  {/* <div className="flex items-center justify-between"> */}
+                  {/* <div className="flex items-center">
                         <input
                           id="remember-me"
                           name="remember-me"
@@ -136,26 +144,26 @@ export default function AffailateSignIn() {
                           Remember me
                         </label>
                       </div> */}
-  
-                      {/* <div className="text-sm leading-6">
+
+                  {/* <div className="text-sm leading-6">
                         <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                           Forgot password?
                         </a>
                       </div> */}
-                    {/* </div> */}
-  
-                    <div>
-                      <button
-                        type="submit"
-                        className="flex w-full justify-center rounded-md bg-[#e62e56] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#c54662] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >
-                        Sign in
-                      </button>
-                    </div>
-                  </form>
-                </div>
-  
-                {/* <div className="mt-10">
+                  {/* </div> */}
+
+                  <div>
+                    <button
+                      type="submit"
+                      className="flex w-full justify-center rounded-md bg-[#e62e56] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#c54662] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      Sign in
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              {/* <div className="mt-10">
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center" aria-hidden="true">
                       <div className="w-full border-t border-gray-200" />
@@ -191,70 +199,71 @@ export default function AffailateSignIn() {
                     </a>
                   </div>
                 </div> */}
-              </div>
             </div>
           </div>
-          <div className="relative hidden w-0 flex-1 lg:block">
-            <img
-              className="absolute inset-0 h-screen w-full object-cover"
-              src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-              alt=""
-            />
-          </div>
         </div>
+        <div className="relative hidden w-0 flex-1 lg:block">
+          <img
+            className="absolute inset-0 h-screen w-full object-cover"
+            src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
+            alt=""
+          />
+        </div>
+      </div>
 
-        {/* // Toast  */}
-        <>
-      {/* Global notification live region, render this permanently at the end of the document */}
-      <div
-        aria-live="assertive"
-        className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
-      >
-        <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
-          {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
-          <Transition
-            show={show}
-            as={Fragment}
-            enter="transform ease-out duration-300 transition"
-            enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
-            enterTo="translate-y-0 opacity-100 sm:translate-x-0"
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-              <div className="p-4">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <XCircleIcon className="h-6 w-6 text-red-400" aria-hidden="true" />
-                  </div>
-                  <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className="text-sm font-medium text-gray-900">Error</p>
-                    <p className="mt-1 text-sm text-gray-500">{errMsg}</p>
-                  </div>
-                  <div className="ml-4 flex flex-shrink-0">
-                    <button
-                      type="button"
-                      className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={() => {
-                        setShow(false)
-                      }}
-                    >
-                      <span className="sr-only">Close</span>
-                      <XMarkIcon className="h-5 w-5" aria-hidden="true" />
-                    </button>
+      {/* // Toast  */}
+      <>
+        {/* Global notification live region, render this permanently at the end of the document */}
+        <div
+          aria-live="assertive"
+          className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+        >
+          <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
+            {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
+            <Transition
+              show={show}
+              as={Fragment}
+              enter="transform ease-out duration-300 transition"
+              enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+              enterTo="translate-y-0 opacity-100 sm:translate-x-0"
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                <div className="p-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <XCircleIcon
+                        className="h-6 w-6 text-red-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-3 w-0 flex-1 pt-0.5">
+                      <p className="text-sm font-medium text-gray-900">Error</p>
+                      <p className="mt-1 text-sm text-gray-500">{errMsg}</p>
+                    </div>
+                    <div className="ml-4 flex flex-shrink-0">
+                      <button
+                        type="button"
+                        className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        onClick={() => {
+                          setShow(false);
+                        }}
+                      >
+                        <span className="sr-only">Close</span>
+                        <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </Transition>
+            </Transition>
+          </div>
         </div>
-      </div>
-    </>
-
-
-        {/* ///  */}
       </>
-    )
-  }
-  
+
+      {/* ///  */}
+    </>
+  );
+}
