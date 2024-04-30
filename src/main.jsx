@@ -16,11 +16,12 @@ import AffailateJobWork from './pages/Affailate-job-work.jsx';
 import UserDashboard from './pages/UserDashboard.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import AdminLogin from './pages/Admin-login.jsx';
+import Homepage from './pages/Homepage.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route path='/' element={<AffailateSignIn />} />
+      <Route path='/' element={<Homepage />} />
       <Route path='/signin' element={<AffailateSignIn />} />
       <Route path='/signup' element={<AffailateSignUp />} />
       <Route path='/job' element={<AffailateJobWork />} />
