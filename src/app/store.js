@@ -5,6 +5,7 @@ import adminHelpSlice from "../features/adminHelpSlice";
 import adminJobSlice from "../features/adminJobSlice";
 import adminWithdrawSlice from "../features/adminWithdrawSlice";
 import adminLatestSlice from "../features/adminLatestSlice";
+import adminSlice from "../features/adminSlice";
 
 
 export const store = configureStore({
@@ -14,6 +15,7 @@ export const store = configureStore({
         help: adminHelpSlice,
         job: adminJobSlice,
         withdraw: adminWithdrawSlice,
-        latest: adminLatestSlice
+        latest: adminLatestSlice,
+        admin: adminSlice
     }
 })

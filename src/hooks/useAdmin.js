@@ -11,20 +11,19 @@ const urllive = "https://backerbackend.onrender.com";
 // This is useADmin hook used for fetching admin credentials from server and storing token and other data in redux store
 
 const useAdmin = () => {
+  const sessionToken = cookie.get("admin_session_token");
     const dispatch = useDispatch()
 
-    const login = async ({ username, password }) => {
+    const login = async (data) => {
         try {
-            const response = await axios.post(`${urllocal}/affaliate/login`, {
-                username,
-                password,
-              });
+            const response = await axios.post(`${urllocal}/admin/admin-login`, data);
               console.log("from useAdmin ", response.data);
               const { user, token } = response.data;
               cookie.set("admin_session_token", token);
+              console.log(user)
               dispatch(
                 setAdmin({
-                    username: user.username,
+                    email: user.email,
                 })
               );
               return response.data;
@@ -50,7 +49,21 @@ const useAdmin = () => {
         return dispatch(clearAdmin());
       };
 
-      return { login, logout };
+      const changePassword = async(data) => {
+        try {
+          const response = await axios.patch(`${urllocal}/admin/password-update`, data, {
+            headers: {
+              ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
+            },
+          })
+    
+          console.log(response.data)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      return { login, logout,changePassword };
 }
 
 export default useAdmin;

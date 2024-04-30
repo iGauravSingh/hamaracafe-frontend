@@ -59,7 +59,7 @@ const useHelp = () => {
 
       // used by admin
       const deleteHelpQuerry = async (id) => {
-        console.log('from delete help', IDBIndex)
+        // console.log('from delete help', IDBIndex)
         try {
           const response = await axios.delete(`http://localhost:8080/help/delete-query/${id}`,{
                     headers: {

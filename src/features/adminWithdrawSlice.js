@@ -16,6 +16,11 @@ export const adminWithdrawSlice = createSlice({
             state.value.withdraw = action.payload;
             state.value.isLoading = false
         },
+        deleteWithdraw: (state, action) => {
+            const id = action.payload;
+            state.value.withdraw = state.value.withdraw.filter(news => news.id !== id);
+            state.value.isLoading = false;
+          },
         clearWithdraw : (state) => {
             state.value.withdraw = null;
             state.value.isLoading = false
@@ -23,5 +28,5 @@ export const adminWithdrawSlice = createSlice({
     }
 })
 
-export const { setWithdraw, clearWithdraw } = adminWithdrawSlice.actions;
+export const { setWithdraw, clearWithdraw,deleteWithdraw } = adminWithdrawSlice.actions;
 export default adminWithdrawSlice.reducer

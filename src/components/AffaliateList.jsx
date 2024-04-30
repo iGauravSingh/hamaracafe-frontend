@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { useSelector } from "react-redux";
+import useAdminAffilateList from "../hooks/useAdminAffiliateList";
 
 // const people = [
 //   {
@@ -34,6 +35,8 @@ const AffaliateList = () => {
 
   const { affiliateUsers, isLoading } = useSelector((state) => state.affiliateUsers.value)
 
+  const { updateAffiliateWork, updateAffiliateInquiries, updateAffiliatetotalEarning } = useAdminAffilateList()
+
   const people = affiliateUsers
   
 
@@ -41,12 +44,14 @@ const AffaliateList = () => {
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [selectedIdToEdit, setSelectedIdToEdit] = useState(null);
   const [selectedWorkToEdit, setSelectedWorkToEdit] = useState(null);
+  const [selectedInquiryToEdit, setSelectedInquiryToEdit] = useState(null)
   const [selectedEarningToEdit, setSelectedEarningToEdit] = useState(null);
 
-  const handleOpenEdit = (id, name, workgoingon, earning) => {
+  const handleOpenEdit = (id, name, workgoingon, totalInquiry,earning) => {
     setIsOpenEdit(true);
     setSelectedIdToEdit(id);
     setSelectedWorkToEdit(workgoingon);
+    setSelectedInquiryToEdit(totalInquiry)
     setSelectedEarningToEdit(earning);
   };
   const handleCloseEdit = () => setIsOpenEdit(false);
@@ -77,9 +82,39 @@ const AffaliateList = () => {
 
   const handleUpdateWork = (id,work) => {
     console.log(id,work)
+    updateAffiliateWork(id,{workgoingon: work})
   }
 
   //
+
+    // Total Inquires form value change handler
+
+    const [inquireValue, setInquireValue] = useState(0);
+
+    useEffect(() => {
+      if (selectedInquiryToEdit != null) {
+        setInquireValue(Number(selectedInquiryToEdit)); // Make sure it's a number
+      }
+    }, [selectedWorkToEdit]);
+  
+    const handleinquireValue = (e) => {
+      setInquireValue(Number(e.target.value)); // Convert input string to number
+    };
+  
+    const incrementinquireByOne = () => {
+      setInquireValue((prevState) => prevState + 1);
+    };
+  
+    const decrementinquireByOne = () => {
+      setInquireValue((prevState) => prevState - 1);
+    };
+  
+    const handleUpdateinquire = (id,inquire) => {
+      console.log(id,inquire)
+      updateAffiliateInquiries(id,{totalInquiry: inquireValue})
+    }
+  
+    //
 
   // Earning value change handler
 
@@ -105,6 +140,7 @@ const AffaliateList = () => {
 
   const handleUpdateEarning = (id,earn) => {
     console.log(id,earn)
+    updateAffiliatetotalEarning(id,{totalEarning: earn})
   }
 
   //
@@ -175,7 +211,13 @@ const AffaliateList = () => {
                     scope="col"
                     className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
-                    Coupon
+                    Affiliate Code
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    Total Inquires
                   </th>
                   <th
                     scope="col"
@@ -225,6 +267,9 @@ const AffaliateList = () => {
                       {person.affiliateCode}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {person.totalInquiry}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {person.workgoingon}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
@@ -237,6 +282,7 @@ const AffaliateList = () => {
                             person.id,
                             person.name,
                             person.workgoingon,
+                            person.totalInquiry,
                             person.earning
                           )
                         }
@@ -253,11 +299,11 @@ const AffaliateList = () => {
         </div>
       </div>
 
-      {/* Modal Edit Work and Earning */}
+      {/* Modal Edit Work , inquire and Earning */}
       <div>
         <Modal isOpen={isOpenEdit} onClose={handleCloseEdit}>
           <h3 className=" text-lg font-bold">
-            Work Going On and Earning Edit Form
+            Work Going On, Inquire and Earning Edit Form
           </h3>
 
           <div className=" flex gap-5">
@@ -296,11 +342,11 @@ const AffaliateList = () => {
 
           {/* Total Enquires  */}
           <div className=" flex flex-col justify-between items-center gap-4 border-b-2 border-l-2 pb-4 mt-4 pl-2">
-            <label htmlFor="Work">Total Enquires</label>
+            <label htmlFor="Work">Total Inquire</label>
             <div className="flex gap-4">
               <input
-                onChange={handleWorkValue}
-                value={workValue}
+                onChange={handleinquireValue}
+                value={inquireValue}
                 className=" outline-none border-2 border-[#e62e56] px-2 py-2"
                 id="work"
                 name="work"
@@ -308,21 +354,21 @@ const AffaliateList = () => {
               />
               <div className=" flex flex-col gap-1">
                 <button
-                  onClick={incrementWorkByOne}
+                  onClick={incrementinquireByOne}
                   className="border-2 border-[#e62e56] text-[#e62e56] px-1"
                 >
                   +
                 </button>
                 <button
-                  onClick={decrementWorkByOne}
+                  onClick={decrementinquireByOne}
                   className="border-2 border-[#e62e56] text-[#e62e56] px-1"
                 >
                   -
                 </button>
               </div>
             </div>
-            <button onClick={()=>handleUpdateWork(selectedIdToEdit,workValue)} className=" border-2 border-[#e62e56] px-1 py-1 text-[#e62e56] cursor-pointer mt-2">
-              Update Work
+            <button onClick={()=>handleUpdateinquire(selectedIdToEdit,inquireValue)} className=" border-2 border-[#e62e56] px-1 py-1 text-[#e62e56] cursor-pointer mt-2">
+              Update Inquire
             </button>
           </div>
 

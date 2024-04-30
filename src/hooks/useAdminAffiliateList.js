@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { clearAffiliateUsers,setAffiliateUsers } from "../features/adminAffiliateListSlice";
+import { clearAffiliateUsers,setAffiliateUsers,updateAffiliateUser } from "../features/adminAffiliateListSlice";
 
 
 import Cookie from "universal-cookie";
@@ -37,8 +37,56 @@ const useAdminAffilateList = () => {
           return dispatch(clearAffiliateUsers())
         }
       };
+
+      const updateAffiliateWork = async (id, data) => {
+        try {
+            const response = await axios.patch(`http://localhost:8080/admin/updateaffwork/${id}`, data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
+                },
+            });
+            const updatedAffiliate = response.data;
+            dispatch(updateAffiliateUser(updatedAffiliate));
+        } catch (error) {
+            console.error("Failed to update affiliate:", error);
+            // Optionally handle errors differently
+        }
+    };
+
+    const updateAffiliateInquiries = async (id, data) => {
+      try {
+          const response = await axios.patch(`http://localhost:8080/admin/updateainquires/${id}`, data, {
+              headers: {
+                  'Content-Type': 'application/json',
+                  ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
+              },
+          });
+          const updatedAffiliate = response.data;
+          dispatch(updateAffiliateUser(updatedAffiliate));
+      } catch (error) {
+          console.error("Failed to update affiliate:", error);
+          // Optionally handle errors differently
+      }
+  };
+
+  const updateAffiliatetotalEarning = async (id, data) => {
+    try {
+        const response = await axios.patch(`http://localhost:8080/admin/updateeraning/${id}`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
+            },
+        });
+        const updatedAffiliate = response.data;
+        dispatch(updateAffiliateUser(updatedAffiliate));
+    } catch (error) {
+        console.error("Failed to update affiliate:", error);
+        // Optionally handle errors differently
+    }
+};
     
-      return { fetchAffilateList };
+      return { fetchAffilateList, updateAffiliateWork, updateAffiliateInquiries, updateAffiliatetotalEarning };
 }
 
 export default useAdminAffilateList;

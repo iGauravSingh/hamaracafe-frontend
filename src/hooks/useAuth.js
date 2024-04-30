@@ -9,7 +9,10 @@ const urllocal = "http://localhost:8080";
 const urllive = "https://backerbackend.onrender.com";
 
 const useAuth = () => {
+
+  const sessionToken = cookie.get("session_token");
   const dispatch = useDispatch();
+ 
 
   const login = async ({ email, password }) => {
     try {
@@ -22,6 +25,7 @@ const useAuth = () => {
           cookie.set("session_token", token);
           dispatch(
             setUser({
+              id: user.id,
               email: user.email,
               name: user.name,
               mobile: user.mobile,
@@ -54,20 +58,44 @@ const useAuth = () => {
     }
   };
 
-  const signup = async ({ email, password, name, address, phoneNumber }) => {
-    const response = await axios.post(`${urllocal}/affaliate/signup`, {
-      email,
-      password,
-      name,
-      address,
-      phoneNumber,
-    });
-    console.log("from signup in useAuth", name);
-    const { user, token } = response.data;
-    cookie.set("session_token", token);
-    dispatch(setUser({ email: user.email, username: user.username }));
+  const signup = async (data) => {
+    try {
+      const response = await axios.post(`${urllocal}/affaliate/signup`, data);
+    // console.log("from signup in useAuth", name);
+    // const { user, token } = response.data;
+    // cookie.set("session_token", token);
+    // dispatch(setUser({ email: user.email, username: user.username }));
+    console.log(response.data)
     return response.data;
+    } catch (error) {
+      return error
+    }
   };
+
+  const imageUpload = async (data) => {
+    try {
+      // console.log('from useAuth')
+      const response = await axios.patch(`${urllocal}/affaliate/imageupload`, data);
+      console.log(response.data)
+      return response.data
+    } catch (error) {
+      
+    }
+  }
+
+  const changePassword = async(data) => {
+    try {
+      const response = await axios.patch(`${urllocal}/affaliate/password-update`, data, {
+        headers: {
+          ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
+        },
+      })
+
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const fetchUser = async () => {
     const sessionToken = cookie.get("session_token");
@@ -96,7 +124,7 @@ const useAuth = () => {
     return dispatch(clearUser());
   };
 
-  return { signup, login, logout, fetchUser };
+  return { signup, login, logout, fetchUser, imageUpload, changePassword };
 };
 
 export default useAuth;

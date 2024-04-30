@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
+import useAdmin from '../hooks/useAdmin'
 
 const ChangePasswordAdmin = () => {
 
   const [pass, setPass] = useState('')
   const [conPass, setConPass] = useState('')
+
+  const { changePassword } = useAdmin()
 
   const handlePassChange = (e) => {
     setPass(e.target.value)
@@ -21,7 +24,7 @@ const ChangePasswordAdmin = () => {
       alert('Password feild can not be empty')
       return
     }
-    console.log(pass,conPass)
+    changePassword({password: pass})
   }
 
   return (

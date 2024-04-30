@@ -10,6 +10,9 @@ import { XMarkIcon } from "@heroicons/react/20/solid";
 
 //
 
+import hamaralogo from '../assets/hamaralogo.webp'
+import three from '../assets/three.jpg'
+
 
 /*
   This example requires some changes to your config:
@@ -105,7 +108,7 @@ export default function AffailateJobWork() {
             <div>
               <img
                 className="h-10 w-auto"
-                src="https://i0.wp.com/hamaracafe.com/wp-content/uploads/2023/05/cropped-Red_Modern_Label_Logo-removebg-preview.png?fit=460%2C97&ssl=1"
+                src={hamaralogo}
                 alt="Your Company"
               />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -279,7 +282,7 @@ export default function AffailateJobWork() {
         <div className="relative hidden w-0 flex-1 lg:block">
           <img
             className="absolute inset-0 h-screen w-full object-cover"
-            src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
+            src={three}
             alt=""
           />
         </div>

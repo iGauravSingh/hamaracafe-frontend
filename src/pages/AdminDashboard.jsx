@@ -23,9 +23,26 @@ import useHelp from "../hooks/useHelp";
 import useJob from "../hooks/useJob";
 import useWithdraw from "../hooks/useWithdraw";
 import useLatest from "../hooks/useLatest";
+import useAdmin from "../hooks/useAdmin";
+import { useNavigate } from "react-router-dom";
+import Unauthorized from "./Unauthorized";
 
 
 const AdminDashboard = () => {
+
+  const navigate = useNavigate()
+
+  const {admin} = useSelector((state) => state.admin.value)
+
+  // console.log('value of admi  from admin dash', admin.email)
+
+  if (!admin) {
+    return <Unauthorized />;
+  }
+
+  // logout
+  const { logout } = useAdmin()
+  //
 
   const { fetchAffilateList } = useAdminAffilateList()
 //  const { affiliateUsers, isLoading }= useSelector((state) => state.affiliateUsers.value)
@@ -68,6 +85,11 @@ const latestData = fetchLatestList()
 
 //
 
+const handleLogout  = () => {
+  logout()
+  navigate('/adminlogin')
+}
+
 
 
   return (
@@ -79,7 +101,7 @@ const latestData = fetchLatestList()
         <h3 className="">Welcome Admin</h3>
         
         </div>
-        <ul className=" w-full flex flex-col gap-6 items-center font-bold text-xl">
+        <ul className=" w-full min-h-screen flex flex-col gap-6 items-center font-bold text-xl font-sans">
           <li className=" mt-5 cursor-pointer">Home</li>
           <li onClick={()=> setPageState('afflist')} className=" cursor-pointer">Affailate List</li>
           <li onClick={()=> setPageState('help')} className=" cursor-pointer">Help Queries</li>
@@ -88,7 +110,7 @@ const latestData = fetchLatestList()
           <li onClick={()=> setPageState('updates')} className=" cursor-pointer">Latest Updates</li>
           <li onClick={()=> setPageState('banner')} className=" cursor-pointer">Banner Upload</li>
           <li onClick={()=> setPageState('pass')} className=" cursor-pointer">Change Password</li>
-          <li className=" cursor-pointer">Logout</li>
+          <li onClick={handleLogout} className=" cursor-pointer">Logout</li>
         </ul>
       </div>
 

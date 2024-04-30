@@ -1,215 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { useForm } from "react-hook-form";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
-// const AffailateSignUp = () => {
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm();
-//   const [hasWebsite, setHasWebsite] = useState(true);
-//   const [hasYoutube, setHasYoutube] = useState(false);
-//   const [hasInstagram, setHasInstagram] = useState(false);
+import { Transition } from "@headlessui/react";
+import { XCircleIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 
-//   const onSubmit = (data) => {
-//     // Handle form submission logic here (e.g., send data to backend)
-//     console.log(data);
-//     alert("Registration submitted!");
-//   };
+import hamaralogo from '../assets/hamaralogo.webp'
+import one from '../assets/one.jpg'
 
-//   const handleCheckboxChange = (event) => {
-//     const { name, checked } = event.target;
-//     switch (name) {
-//       case "hasWebsite":
-//         setHasWebsite(checked);
-//         break;
-//       case "hasYoutube":
-//         setHasYoutube(checked);
-//         break;
-//       case "hasInstagram":
-//         setHasInstagram(checked);
-//         break;
-//       default:
-//         break;
-//     }
-//   };
 
-//   return (
-//     <div className="container h-screen flex flex-col md:flex-row justify-center items-start">
-
-// {/* Left side registration form  */}
-
-//       <form className=" w-full md:w-1/2" id="registrationForm" onSubmit={handleSubmit(onSubmit)}>
-//       <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-//                   Affailate Sign up
-//                 </h2>
-//         <label htmlFor="name">Name:</label>
-//         <input
-//           type="text"
-//           id="name"
-//           name="name"
-//           {...register("name", { required: true })}
-//         />
-//         {errors.name && <span className="text-red-500">Name is required</span>}
-//         <label htmlFor="email">Email:</label>
-//         <input
-//           type="email"
-//           id="email"
-//           name="email"
-//           {...register("email", { required: true })}
-//         />
-//         {errors.email && (
-//           <span className="text-red-500">Email is required</span>
-//         )}
-//         <label htmlFor="mobileNumber">Mobile Number:</label>
-//         <input
-//           type="tel"
-//           id="mobileNumber"
-//           name="mobileNumber"
-//           {...register("mobileNumber", { required: true })}
-//         />
-//         {errors.mobileNumber && (
-//           <span className="text-red-500">Mobile Number is required</span>
-//         )}
-//         <h5> Please Add Atleast Any One</h5>
-//         <div className="choice-fields flex gap-10">
-//           <div className="choice-fields-element flex items-center justify-center gap-4">
-//             <input
-//               type="checkbox"
-//               id="hasWebsite"
-//               name="hasWebsite"
-//               checked={hasWebsite}
-//               onChange={handleCheckboxChange}
-//             />
-//             <label htmlFor="hasWebsite">Website / Blog</label>
-//           </div>
-//           <div className="choice-fields-element flex items-center justify-center gap-4">
-//             <input
-//               type="checkbox"
-//               id="hasYoutube"
-//               name="hasYoutube"
-//               checked={hasYoutube}
-//               onChange={handleCheckboxChange}
-//             />
-//             <label htmlFor="hasYoutube">YouTube Channel</label>
-//           </div>
-//           <div className="choice-fields-element flex items-center justify-center gap-4">
-//             <input
-//               type="checkbox"
-//               id="hasInstagram"
-//               name="hasInstagram"
-//               checked={hasInstagram}
-//               onChange={handleCheckboxChange}
-//             />
-//             <label htmlFor="hasInstagram">Instagram</label>
-//           </div>
-//         </div>
-
-//         <label htmlFor="websiteAddress">
-//           Website Url:
-//           <input
-//             type="url"
-//             id="websiteAddress"
-//             name="websiteAddress"
-//             {...register("websiteAddress", { required: hasWebsite })}
-//             className={hasWebsite ? "" : "hidden"}
-//           />
-//           {errors.websiteAddress && (
-//             <span className="text-red-500">Website Url is required</span>
-//           )}
-//         </label>
-
-//         <label htmlFor="youtubeChannel">
-//           YouTube Channel Link:
-//           <input
-//             type="url"
-//             id="youtubeChannel"
-//             name="youtubeChannel"
-//             {...register("youtubeChannel", { required: hasYoutube })}
-//             className={hasYoutube ? "" : "hidden"}
-//           />
-//           {errors.youtubeChannel && (
-//             <span className="text-red-500">
-//               YouTube Channel Link is required
-//             </span>
-//           )}
-//         </label>
-
-//         <label htmlFor="instagramId">
-//           Instagram ID:
-//           <input
-//             type="text"
-//             id="instagramId"
-//             name="instagramId"
-//             {...register("instagramId", { required: hasInstagram })}
-//             className={hasInstagram ? "" : "hidden"}
-//           />
-//           {errors.instagramId && (
-//             <span className="text-red-500">Instagram ID is required</span>
-//           )}
-//         </label>
-
-//         <label htmlFor="password">Password:</label>
-//         <input
-//           type="password"
-//           id="password"
-//           name="password"
-//           {...register("password", { required: true })}
-//         />
-//         {errors.password && (
-//           <span className="text-red-500">Password is required</span>
-//         )}
-
-//         <button
-//           type="submit"
-//           className="w-400 py-20 bg-e62e56 text-white rounded-4 cursor-pointer hover:bg-0056b3"
-//         >
-//           Send for Approval
-//         </button>
-//       </form>
-
-// {/* Right side points  */}
-//       <div className="w-full md:w-1/2 md:border-l-2 flex flex-col justify-center items-center">
-//         <h3>Please ensure this before applying:</h3>
-//         <ul>
-//           <li>
-//             <i className="fas fa-check-circle"></i> 1k+ subscribers on YouTube
-//           </li>
-//           <li>
-//             <i className="fas fa-check-circle"></i> 1k+ followers on Instagram
-//           </li>
-//           <li>
-//             <i className="fas fa-check-circle"></i> 2k+ monthly traffic on a
-//             website
-//           </li>
-//           <li>
-//             <i className="fas fa-check-circle"></i> Have an active mobile
-//             number/ email
-//           </li>
-//         </ul>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AffailateSignUp;
-
-/////////////////////////////
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
 export default function AffailateSignUp() {
+
+  const navigate = useNavigate()
+
+  const { signup } = useAuth()
+
+  const [show, setShow] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -220,13 +30,22 @@ export default function AffailateSignUp() {
   const [hasYoutube, setHasYoutube] = useState(false);
   const [hasInstagram, setHasInstagram] = useState(false);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if(!hasWebsite && !hasYoutube && !hasInstagram){
         alert('Atleast one of youtube, website, instagram should be provided')
         return
     }
     console.log(data);
-    alert("Registration submitted!");
+    const resp = await signup(data)
+    if (resp?.user) {
+      // navigate to dashboard
+      navigate("/signin");
+    } else {
+      // display error
+      console.log(resp?.response?.data?.errors[0]?.msg);
+      setErrMsg(resp?.response?.data?.errors[0]?.msg);
+      setShow(true);
+    }
   };
 
   const handleCheckboxChange = (event) => {
@@ -262,7 +81,7 @@ export default function AffailateSignUp() {
             <div>
               <img
                 className="h-10 w-auto"
-                src="https://i0.wp.com/hamaracafe.com/wp-content/uploads/2023/05/cropped-Red_Modern_Label_Logo-removebg-preview.png?fit=460%2C97&ssl=1"
+                src={hamaralogo}
                 alt="Your Company"
               />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -560,11 +379,65 @@ export default function AffailateSignUp() {
         <div className="relative hidden w-0 flex-1 lg:block">
           <img
             className="absolute inset-0 h-full w-full object-cover"
-            src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
+            src={one}
             alt=""
           />
         </div>
       </div>
+
+      {/* // Toast  */}
+      <>
+        {/* Global notification live region, render this permanently at the end of the document */}
+        <div
+          aria-live="assertive"
+          className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+        >
+          <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
+            {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
+            <Transition
+              show={show}
+              as={Fragment}
+              enter="transform ease-out duration-300 transition"
+              enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+              enterTo="translate-y-0 opacity-100 sm:translate-x-0"
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                <div className="p-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <XCircleIcon
+                        className="h-6 w-6 text-red-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-3 w-0 flex-1 pt-0.5">
+                      <p className="text-sm font-medium text-gray-900">Error</p>
+                      <p className="mt-1 text-sm text-gray-500">{errMsg}</p>
+                    </div>
+                    <div className="ml-4 flex flex-shrink-0">
+                      <button
+                        type="button"
+                        className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        onClick={() => {
+                          setShow(false);
+                        }}
+                      >
+                        <span className="sr-only">Close</span>
+                        <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Transition>
+          </div>
+        </div>
+      </>
+
+      {/* ///  */}
     </>
   );
 }

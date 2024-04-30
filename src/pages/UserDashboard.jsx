@@ -26,6 +26,8 @@ import { useNavigate } from "react-router-dom";
 import Unauthorized from "./Unauthorized";
 import useLatest from "../hooks/useLatest";
 import useHelp from "../hooks/useHelp";
+import useWithdraw from "../hooks/useWithdraw";
+import useBanner from "../hooks/useBanner";
 
 const UserDashboard = () => {
   ///////toast state
@@ -48,6 +50,26 @@ const UserDashboard = () => {
   const { latest, isLoading } = useSelector((state) => state.latest.value);
 
   const { fetchLatestList } = useLatest();
+
+  const { requestWithdraw } = useWithdraw();
+
+  const { getAllBanner } = useBanner();
+  const [bann, setBann] = useState([]);
+
+  useEffect(() => {
+    const fetchBannerData = async () => {
+      try {
+        const banners = await getAllBanner();
+        console.log('from useEffect',banners)
+        setBann(banners);
+      } catch (error) {
+        console.error('Error fetching banner data:', error);
+        // Handle error if necessary
+      }
+    };
+
+    fetchBannerData();
+  }, []);
 
   useEffect(() => {
     fetchLatestList();
@@ -96,9 +118,27 @@ const UserDashboard = () => {
     setDraw((prevState) => !prevState);
   };
 
-  const handleWithdrawRequest = () => {
+  const handleWithdrawRequest = async () => {
     setDraw(false);
     // check if drawAmt is more then net earning then send error
+
+    // send withdraw request
+    console.log(drawAmt);
+    const withReq = await requestWithdraw({ amount: drawAmt });
+
+    console.log(withReq);
+    if (withReq.success === true) {
+      // console.log('in withreq')
+      setToastHead("Success");
+      setToastMsg("Withdraw Requset Sent Successfully.");
+      setIsOpenEarning(false);
+      setShow(true);
+    } else {
+      setToastHead("Error");
+      setToastMsg("Some error in communicating with server.");
+      setIsOpenEarning(false);
+      setShow(true);
+    }
   };
 
   //
@@ -185,7 +225,7 @@ const UserDashboard = () => {
             />
             <h3 className="">Welcome {userData.name}</h3>
           </div>
-          <ul className=" w-full flex flex-col gap-6 items-center font-bold text-xl">
+          <ul className=" w-full flex flex-col gap-6 items-center font-bold text-xl font-sans">
             <li className=" mt-5 cursor-pointer">Home</li>
             <li className=" cursor-pointer" onClick={handleOpenProfile}>
               Profile
@@ -209,20 +249,22 @@ const UserDashboard = () => {
 
           {/* banner  */}
           <div>
-            <ul className=" flex justify-center gap-2 mt-6 ">
-              <li className=" px-2 py-2 bg-green-700 text-white cursor-pointer">
+            <div className=" flex justify-center gap-2 mt-6 ">
+              
+            {bann[0] && <a href={(bann?.filter(nn=> nn.buttonId === 1))[0].url} target="_blank" rel="noopener noreferrer" className=" px-2 py-2 bg-green-700 text-white cursor-pointer">
                 Instagram
-              </li>
-              <li className=" px-2 py-2 bg-blue-700 text-white cursor-pointer">
+              </a>}
+              
+              { bann[0] && <a href={(bann?.filter(nn=> nn.buttonId === 2))[0].url} target="_blank" rel="noopener noreferrer" className=" px-2 py-2 bg-blue-700 text-white cursor-pointer">
                 Youtube
-              </li>
-              <li className=" px-2 py-2 bg-red-700 text-white cursor-pointer">
+              </a>}
+              { bann[0] && <a href={(bann?.filter(nn=> nn.buttonId === 3))[0].url} target="_blank" rel="noopener noreferrer" className=" px-2 py-2 bg-red-700 text-white cursor-pointer">
                 Website
-              </li>
-              <li className=" px-2 py-2 bg-yellow-400 text-white cursor-pointer">
+              </a>}
+              { bann[0] && <a href={(bann?.filter(nn=> nn.buttonId === 4))[0].url} target="_blank" rel="noopener noreferrer" className=" px-2 py-2 bg-yellow-400 text-white cursor-pointer">
                 Other
-              </li>
-            </ul>
+              </a>}
+            </div>
           </div>
 
           {/* cards  */}
@@ -298,6 +340,7 @@ const UserDashboard = () => {
           <button onClick={handleOpen}>Open Modal</button> */}
           <Modal isOpen={isOpenProfile} onClose={handleCloseProfile}>
             <UserProfile
+              userid={userData.id}
               imageUrl={userData.imageUrl}
               userName={userData.name}
               affiliateCode={userData.affiliateCode}

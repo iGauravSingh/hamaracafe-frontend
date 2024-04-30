@@ -1,5 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { format } from 'date-fns';
+import useWithdraw from '../hooks/useWithdraw';
 
 // const people = [
 //     { id:1, name: 'Lindsay Walton', email: 'lindsay.walton@example.com', mobile: '987654345', widthdrawRequest: 500 },
@@ -11,10 +13,18 @@ const WithdrawRequest = () => {
 
   const { withdraw, isLoading } = useSelector((state) => state.withdraw.value )
 
+  const { deleteWithdrawQuery } = useWithdraw()
+
   const people = withdraw
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'MMMM dd, yyyy hh:mm a');
+  };
 
     const handleQueryRemove =(id) => {
         console.log(id)
+        deleteWithdrawQuery(id)
       }
       
         return (
@@ -23,7 +33,7 @@ const WithdrawRequest = () => {
                 <div className="sm:flex-auto">
                   <h1 className="text-base font-semibold leading-6 text-gray-900 mt-5">Help and Support Queries</h1>
                   <p className="mt-2 text-sm text-gray-700">
-                    A list of all the Help And Support Queries in your account.
+                    A list of all the Withdraw Queries in your account.
                   </p>
                 </div>
                 
@@ -39,6 +49,9 @@ const WithdrawRequest = () => {
                             className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8"
                           >
                             id
+                          </th>
+                          <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                            Request Time
                           </th>
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                             Name
@@ -59,14 +72,15 @@ const WithdrawRequest = () => {
                       </thead>
                       <tbody className="divide-y divide-gray-200 bg-white">
                         {people?.map((person) => (
-                          <tr key={person.email}>
+                          <tr key={person.id}>
                             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
                               {person.id}
                             </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{formatDate(person.createdAt)}</td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.name}</td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.email}</td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.mobile}</td>
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.widthdrawRequest}</td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.withdrawAmount}</td>
                             
                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
                               <p onClick={()=>handleQueryRemove(person.id)} className="text-[#e62e56] hover:text-[#a51937e1] cursor-pointer">
