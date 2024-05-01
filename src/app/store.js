@@ -6,6 +6,10 @@ import adminJobSlice from "../features/adminJobSlice";
 import adminWithdrawSlice from "../features/adminWithdrawSlice";
 import adminLatestSlice from "../features/adminLatestSlice";
 import adminSlice from "../features/adminSlice";
+import franchiseSlice from "../features/franchiseSlice";
+import adminFranchiseListSlice from "../features/adminFranchiseListSlice";
+import adminFranchiseWorkSlice from "../features/adminFranchiseWorkSlice";
+
 
 
 export const store = configureStore({
@@ -16,6 +20,9 @@ export const store = configureStore({
         job: adminJobSlice,
         withdraw: adminWithdrawSlice,
         latest: adminLatestSlice,
-        admin: adminSlice
+        admin: adminSlice,
+        franchise: franchiseSlice,
+        franchiseUsers: adminFranchiseListSlice,
+        franchisework: adminFranchiseWorkSlice
     }
 })

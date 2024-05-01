@@ -17,6 +17,11 @@ import UserDashboard from './pages/UserDashboard.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import AdminLogin from './pages/Admin-login.jsx';
 import Homepage from './pages/Homepage.jsx';
+import NotFound from './pages/NotFound.jsx';
+import FranchiseSignup from './pages/FranchiseSignup.jsx';
+import FranchiseDashboard from './pages/FranchiseDashboard.jsx';
+import FranchiseSignin from './pages/FranchiseSignin.jsx';
+import DashboardController from './pages/DashboardController.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,12 +31,16 @@ const router = createBrowserRouter(
       <Route path='/signup' element={<AffailateSignUp />} />
       <Route path='/job' element={<AffailateJobWork />} />
       <Route path='/adminlogin' element={<AdminLogin />} />
+      <Route path='/franchisesignup' element={<FranchiseSignup />} />
+      <Route path='/franchisesignin' element={<FranchiseSignin />} />
 
       {/* protected routes  */}
       <Route path='/dashboard' element={<UserDashboard />} />
-      <Route path='/admindashboard' element={<AdminDashboard />} />
-
+      <Route path='/admindashboard' element={<DashboardController />} />
+      <Route path='/franchisedashboard' element={<FranchiseDashboard />} />
       {/* //  */}
+      <Route path="*" element={<NotFound />} />
+      
     </Route>
   )
 )

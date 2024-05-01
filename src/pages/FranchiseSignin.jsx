@@ -1,18 +1,15 @@
 import React, { useState, Fragment } from "react";
 import { useForm } from "react-hook-form";
-import useJob from "../hooks/useJob";
-
-// toast related
 import { Transition } from "@headlessui/react";
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 
-//
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 import hamaralogo from '../assets/hamaralogo.webp'
-import three from '../assets/three.jpg'
-
+import six from '../assets/six.jpg'
+import useFranchise from "../hooks/useFranchise";
 
 /*
   This example requires some changes to your config:
@@ -28,26 +25,13 @@ import three from '../assets/three.jpg'
   }
   ```
 */
-export default function AffailateJobWork() {
+export default function FranchiseSignin() {
+  const navigate = useNavigate();
 
-    const [querycode, setQuerycode] = useState('hamara/111')
+  const [show, setShow] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
 
-     //////// Button Loading
-  const [loadingJob, setLoadingHelp] = useState(false);
-
-  ////////
-
-    ///////toast state
-    const [show, setShow] = useState(false);
-
-    const [toastHead, setToastHead] = useState("");
-    const [toastMsg, setToastMsg] = useState("");
-  
-    /////////
-
-  const { addJobRequest } = useJob()
-
-    
+  const { login } = useFranchise();
 
   const {
     register,
@@ -56,42 +40,18 @@ export default function AffailateJobWork() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    setLoadingHelp(true)
-    console.log(data)
-    const response = await addJobRequest({name: data.name, mobile: data.phone, affiliateCode: querycode, work: data.work})
-    if(response.success){
-      setToastHead("Success")
-      setToastMsg("Request Submitted")
-      setShow(true)
+    console.log(data);
+    const resp = await login(data);
+    if (resp?.user) {
+      // navigate to dashboard
+      navigate("/franchisedashboard");
     } else {
-      setToastHead("Error")
-      setToastMsg("Network Error")
+      // display error
+      console.log(resp?.response?.data?.errors[0]?.msg);
+      setErrMsg(resp?.response?.data?.errors[0]?.msg);
+      setShow(true);
     }
   };
-
-
-   // Function to parse query parameters from URL
-   function getQueryVariable(variable) {
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] === variable) {
-            return pair[1];
-        }
-    }
-    return false;
-}
-
-  // Set default value for Refer Code field
-  window.onload = function () {
-    var couponCode = getQueryVariable("coupon");
-    if (couponCode) {
-        setQuerycode(couponCode);
-    } else {
-        setQuerycode("");
-    }
-};
 
   return (
     <>
@@ -113,7 +73,7 @@ export default function AffailateJobWork() {
                 alt="Your Company"
               />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                Job Work Form
+                Franchise Signin
               </h2>
               {/* <p className="mt-2 text-sm leading-6 text-gray-500">
                   Not a member?{' '}
@@ -132,99 +92,49 @@ export default function AffailateJobWork() {
                 >
                   <div>
                     <label
-                      htmlFor="name"
+                      htmlFor="mobile"
                       className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      Name
+                      Mobile Number
                     </label>
                     <div className="mt-2">
                       <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        autoComplete="name"
-                        {...register("name", { required: true })}
+                        id="mobile"
+                        name="mobile"
+                        type="mobile"
+                        autoComplete="mobile"
+                        {...register("mobile", { required: true })}
                         className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
-                      {errors.name && (
-                        <span className="text-red-500">Name is required</span>
+                      {errors.mobile && (
+                        <span className="text-red-500">mobile is required</span>
                       )}
                     </div>
                   </div>
 
                   <div>
                     <label
-                      htmlFor="phone"
+                      htmlFor="password"
                       className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      Phone No
+                      Password
                     </label>
                     <div className="mt-2">
                       <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        autoComplete="phone"
-                        {...register("phone", {
-                          required: "Phone number is required",
-                          minLength: {
-                            value: 10,
-                            message: "Phone number must be 10 digits long"
-                          },
-                          maxLength: {
-                            value: 10,
-                            message: "Phone number must be 10 digits long"
-                          }
-                        })}
+                        id="password"
+                        name="password"
+                        type="password"
+                        autoComplete="current-password"
+                        {...register("password", { required: true })}
                         className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
-                      {errors.phone && (
+                      {errors.password && (
                         <span className="text-red-500">
-                          {errors.phone.message}
+                          Password is required
                         </span>
                       )}
                     </div>
                   </div>
-
-                  {/* work writing feild  */}
-
-                  <div>
-                    <label
-                      htmlFor="work"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Requested Work
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="work"
-                        name="work"
-                        type="text"
-                        autoComplete="work"
-                        {...register("work", { required: true })}
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                      {errors.name && (
-                        <span className="text-red-500">Please Specify About The Work</span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* query code  */}
-                  {querycode !=='hamara/111' && (
-                    <div>
-                    <label
-                      htmlFor="affcode"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Affailate Code
-                    </label>
-                    <div className="mt-2">
-                      <p className="block w-full h-9 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">{querycode}</p>
-                      
-                    </div>
-                  </div>
-                  )}
 
                   {/* <div className="flex items-center justify-between"> */}
                   {/* <div className="flex items-center">
@@ -247,20 +157,12 @@ export default function AffailateJobWork() {
                   {/* </div> */}
 
                   <div>
-                    {/* <button
+                    <button
                       type="submit"
                       className="flex w-full justify-center rounded-md bg-[#e62e56] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#c54662] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Request To Apply
-                    </button> */}
-                    <button
-                type="submit"
-                className={`flex w-full justify-center rounded-md bg-[#e62e56] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#c54662] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${
-                  loadingJob ? "pointer-events-none opacity-50" : ""
-                }`}
-              >
-                {loadingJob ? "Submitted!" : "Submit"}
-              </button>
+                      Sign in
+                    </button>
                   </div>
                 </form>
               </div>
@@ -307,14 +209,14 @@ export default function AffailateJobWork() {
         <div className="relative hidden w-0 flex-1 lg:block">
           <img
             className="absolute inset-0 h-screen w-full object-cover"
-            src={three}
+            src={six}
             alt=""
           />
         </div>
       </div>
 
- {/* // Toast */}
- <>
+      {/* // Toast  */}
+      <>
         {/* Global notification live region, render this permanently at the end of the document */}
         <div
           aria-live="assertive"
@@ -336,23 +238,14 @@ export default function AffailateJobWork() {
                 <div className="p-4">
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
-                      {toastHead === "Success" ? (
-                        <CheckCircleIcon
-                          className="h-6 w-6 text-green-400"
-                          aria-hidden="true"
-                        />
-                      ) : (
-                        <XCircleIcon
-                          className="h-6 w-6 text-red-400"
-                          aria-hidden="true"
-                        />
-                      )}
+                      <XCircleIcon
+                        className="h-6 w-6 text-red-400"
+                        aria-hidden="true"
+                      />
                     </div>
                     <div className="ml-3 w-0 flex-1 pt-0.5">
-                      <p className="text-sm font-medium text-gray-900">
-                        {toastHead}
-                      </p>
-                      <p className="mt-1 text-sm text-gray-500">{toastMsg}</p>
+                      <p className="text-sm font-medium text-gray-900">Error</p>
+                      <p className="mt-1 text-sm text-gray-500">{errMsg}</p>
                     </div>
                     <div className="ml-4 flex flex-shrink-0">
                       <button
@@ -374,6 +267,7 @@ export default function AffailateJobWork() {
         </div>
       </>
 
+      {/* ///  */}
     </>
   );
 }
