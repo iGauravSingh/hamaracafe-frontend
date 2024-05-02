@@ -88,6 +88,16 @@ const useFranchise = () => {
     }
   }
 
+  const fetchLetter = async() => {
+    try {
+      const response = await axios.get(`${urllocal}/franchise/fetch-letter`)
+      console.log(response.data)
+      return response.data
+    } catch (error) {
+      
+    }
+  }
+
   const changePassword = async(data) => {
     try {
       const response = await axios.patch(`${urllocal}/franchise/password-update`, data, {
@@ -140,8 +150,9 @@ const useFranchise = () => {
       console.log('error in fetch work list ', error)
     }
   };
+  
 
-  return { signup, login, logout, fetchUser, imageUpload, changePassword, fetchAllFranchie, fetchWorkList };
+  return { signup, login, logout, fetchUser, imageUpload, changePassword, fetchAllFranchie, fetchWorkList, fetchLetter };
 };
 
 export default useFranchise;

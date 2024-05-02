@@ -3,11 +3,12 @@ import Button from '../components/Button'
 import { v4 as uuidv4 } from 'uuid';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import useFranchise from '../hooks/useFranchise';
 
 const ProfileFranchise = ({userid,imageUrl, userName,about}) => {
 
     const navigate = useNavigate()
-    const { imageUpload, logout, changePassword } = useAuth()
+    const { imageUpload, changePassword } = useFranchise()
     const [pass, setPass] = useState(false)
     const [file, setFile] = useState(null);
 

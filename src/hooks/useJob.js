@@ -58,7 +58,7 @@ const useJob = () => {
       // change Manager
       // used by admin
       const ChangeJobManager = async (data) => {
-        console.log('from change manager Job', IDBIndex)
+        // console.log('from change manager Job', IDBIndex)
         try {
           const response = await axios.delete(`http://localhost:8080/admin/change-job`,data,{
                     headers: {

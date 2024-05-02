@@ -31,10 +31,9 @@ import useBanner from "../hooks/useBanner";
 import useFranchise from "../hooks/useFranchise";
 import ProfileFranchise from "./ProfileFranchise";
 import { format } from 'date-fns';
-const formatDate = (dateString) => {
-      const date = new Date(dateString);
-      return format(date, 'MMMM dd, yyyy hh:mm a');
-    };
+
+
+
 
 const FranchiseDashboard = () => {
   ///////toast state
@@ -62,9 +61,16 @@ const FranchiseDashboard = () => {
 
 //   const { getAllBanner } = useBanner();
 //   const [bann, setBann] = useState([]);
-const { logout, fetchWorkList } = useFranchise()
+
+if (!franchise.franchise) {
+  return <Unauthorized />;
+}
+
+const { logout, fetchWorkList,fetchLetter } = useFranchise()
 
 const [workList, setWorkList] = useState([]);
+
+const [letterList, setLetterList] = useState([])
 
   useEffect(() => {
     const fetchfranchiseworkData = async () => {
@@ -80,6 +86,22 @@ const [workList, setWorkList] = useState([]);
 
     fetchfranchiseworkData();
   }, []);
+
+  // letter image
+  useEffect(() => {
+    const fetchLetterData = async () => {
+      try {
+        const letterr = await fetchLetter();
+        console.log('from useEffect',letterr[0].letterLink)
+        setLetterList(letterr[0].letterLink);
+      } catch (error) {
+        console.error('Error fetching banner data:', error);
+        // Handle error if necessary
+      }
+    };
+//
+fetchLetterData();
+  }, []);
   
 
   useEffect(() => {
@@ -90,9 +112,7 @@ const [workList, setWorkList] = useState([]);
 
   //console.log(user.user)
 
-//   if (!user.user) {
-//     return <Unauthorized />;
-//   }
+ 
 
 // console.log(franchise)
   const userData = franchise?.franchise;
@@ -220,7 +240,7 @@ const [workList, setWorkList] = useState([]);
           <div>
             <div className=" flex justify-center gap-2 mt-6 ">
               
-            {<a href='#' target="_blank" rel="noopener noreferrer" className=" px-2 py-2 bg-[#e62e56] text-white cursor-pointer">
+            {<a href={letterList} target="_blank" rel="noopener noreferrer" className=" px-2 py-2 bg-[#e62e56] text-white cursor-pointer">
                 Authorization Letter
               </a>}
               
