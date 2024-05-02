@@ -129,7 +129,19 @@ const useFranchise = () => {
     return dispatch(clearFranchise());
   };
 
-  return { signup, login, logout, fetchUser, imageUpload, changePassword, fetchAllFranchie };
+  const fetchWorkList = async (id) => {
+    console.log('from useworl list')
+    try {
+      const response = await axios.get(`http://localhost:8080/franchise/getall/${id}`);
+      const latestData = response.data;
+      console.log(latestData)
+      return latestData
+    } catch (error) {
+      console.log('error in fetch work list ', error)
+    }
+  };
+
+  return { signup, login, logout, fetchUser, imageUpload, changePassword, fetchAllFranchie, fetchWorkList };
 };
 
 export default useFranchise;

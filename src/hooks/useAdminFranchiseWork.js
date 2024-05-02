@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 // import { setLatest,clearLatest,addLatest,deleteLatest } from "../features/adminLatestSlice";
-import { setFranchisework, clearFranchisework, addFranchisework, deleteFranchisework } from "../features/adminFranchiseWorkSlice";
+import { setFranchisework, clearFranchisework, addFranchisework, deleteFranchisework, updateFranchiseWork } from "../features/adminFranchiseWorkSlice";
 
 import Cookie from "universal-cookie";
 
@@ -19,22 +19,19 @@ const useAdminFranchiseWork = () => {
     
     const dispatch = useDispatch()
 
-      const fetchWorkList = async () => {
+      const fetchWorkList = async (id) => {
+        console.log('from useworl list')
         try {
-          const response = await axios.get('http://localhost:8080/franchise/getallLatest',{
-                    headers: {
-                      ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
-                    },
-                  });
+          const response = await axios.get(`http://localhost:8080/franchise/getall/${id}`);
           const latestData = response.data;
           if(!latestData){
-            return dispatch(clearLatest())
+            return dispatch(clearFranchisework())
           }
 
           console.log(latestData)
-          dispatch(setLatest(latestData))
+          dispatch(setFranchisework(latestData))
         } catch (error) {
-          return dispatch(clearLatest())
+          return dispatch(clearFranchisework())
         }
       };
 
@@ -48,33 +45,48 @@ const useAdminFranchiseWork = () => {
 
                 const latestData = response.data
                 if(!latestData){
-                  return dispatch(clearLatest())
+                  return dispatch(clearFranchisework())
                 }
       
                 console.log(latestData)
-                dispatch(addLatest(latestData))
+                dispatch(addFranchisework(latestData))
         } catch (error) {
           console.log("error from useLatest add", error)
-          return dispatch(clearLatest())
+          return dispatch(clearFranchisework())
         }
       }
 
       const deleteWorkUpdates = async (id) => {
         try {
-          const response = await axios.delete(`http://localhost:8080/franchise/deleteLatest/${id}`, {
+          const response = await axios.delete(`http://localhost:8080/franchise/deletework/${id}`, {
             headers: {
               ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
             },
           });
           if (response.data.success) {
-            dispatch(deleteLatest(id)); // Update Redux store by removing the deleted item
+            dispatch(deleteFranchisework(id)); // Update Redux store by removing the deleted item
           }
         } catch (error) {
           console.error('Error deleting latest news:', error);
         }
       };
+
+      const updateWork = async (data) => {
+        try {
+          const response = await axios.patch('http://localhost:8080/franchise/updatework', data)
+          const updateWork = response.data
+          console.log(updateWork)
+          if(response.data?.id){
+            console.log(updateWork)
+            dispatch(updateFranchiseWork(updateWork))
+          }
+
+        } catch (error) {
+          
+        }
+      }
     
-      return { fetchWorkList, addWorkUpdates, deleteWorkUpdates };
+      return { fetchWorkList, addWorkUpdates, deleteWorkUpdates,updateWork };
 }
 
 export default useAdminFranchiseWork;

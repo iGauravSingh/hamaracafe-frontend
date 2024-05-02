@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { useSelector } from "react-redux";
+import { format } from 'date-fns';
 import useAdminAffilateList from "../hooks/useAdminAffiliateList";
 import BreadcrumbComponent from "./BreadcrumbComponent";
+
 
 const FranchiseList = () => {
   const { franchiseUsers, isLoading } = useSelector(
@@ -26,6 +28,11 @@ const FranchiseList = () => {
   // Event handler to switch back to the table view
   const handleGoBack = () => {
     setShowTable(true);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'MMMM dd, yyyy hh:mm a');
   };
 
   return (
@@ -60,6 +67,12 @@ const FranchiseList = () => {
                     scope="col"
                     className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
+                    Joining Date
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
                     Name
                   </th>
                   <th
@@ -87,6 +100,9 @@ const FranchiseList = () => {
                   <tr key={person.id}>
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
                       {person.id}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {formatDate(person.createdAt)}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {person.name}

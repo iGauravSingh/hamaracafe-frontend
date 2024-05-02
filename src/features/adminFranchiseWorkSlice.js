@@ -26,6 +26,14 @@ export const adminFranchiseWorkSlice = createSlice({
             state.value.franchisework = state.value.franchisework.filter(news => news.id !== id);
             state.value.isLoading = false;
           },
+          updateFranchiseWork: (state,action) => {
+            const updateWork = action.payload
+            console.log('from usefranchise work slice',updateWork)
+            const indexWork = state.value.franchisework.findIndex((wok) => wok.id === updateWork.id)
+            if(indexWork !== -1){
+                state.value.franchisework[indexWork] = updateWork
+            }
+          },
       
         clearFranchisework : (state) => {
             state.value.franchisework = null;
@@ -34,5 +42,5 @@ export const adminFranchiseWorkSlice = createSlice({
     }
 })
 
-export const { setFranchisework, addFranchisework ,clearFranchisework, deleteFranchisework } = adminFranchiseWorkSlice.actions;
+export const { setFranchisework, addFranchisework ,clearFranchisework, deleteFranchisework,updateFranchiseWork } = adminFranchiseWorkSlice.actions;
 export default adminFranchiseWorkSlice.reducer

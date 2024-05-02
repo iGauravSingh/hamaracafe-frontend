@@ -1,8 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useAdminFranchiseWork from "../hooks/useAdminFranchiseWork";
+import { useSelector } from "react-redux";
+import { format } from 'date-fns';
 
 const BreadcrumbComponent = ({ onBack, id, name }) => {
+
+  // franchisework
+  // const { job, isLoading } = useSelector((state) => state.job.value)
+  const { franchisework,isLoading } = useSelector((state) => state.franchisework.value)
+
+
+  const [text, setText] = useState('')
+
+  const { fetchWorkList,addWorkUpdates,deleteWorkUpdates,updateWork } = useAdminFranchiseWork()
+
+  useEffect(() => {
+    fetchWorkList(id)
+  },[id])
+
+  const handleSubmit = () => {
+    if(!text){
+      alert("Input Feild Should Not Be Empty")
+      return
+    }
+    console.log({franchiseName: name,franchiseId: id,detail: text})
+    addWorkUpdates({franchiseName: name,franchiseId: id,detail: text})
+  }
+
+  const handleDelete = (workid) => {
+    deleteWorkUpdates(workid)
+  }
+
+  const handleComplete =(workid) => {
+    console.log(workid)
+    updateWork({workid: workid,completestatus: "yes"})
+  }
+
+
   const handleClick = () => {
     onBack();
+  };
+
+  
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'MMMM dd, yyyy hh:mm a');
   };
 
   return (
@@ -21,8 +63,8 @@ const BreadcrumbComponent = ({ onBack, id, name }) => {
       <div className=" flex gap-5 items-center">
         {/* Add Work  */}
         <label htmlFor="work">Add New Work</label>
-        <input className=" px-2 py-2" id="work" name="work" type="text" />
-        <button className=" px-4 py-2 border-2 border-red-500 text-red-600">Add</button>
+        <input value={text} onChange={(e)=> setText(e.target.value)} className=" px-2 py-2" id="work" name="work" type="text" />
+        <button onClick={handleSubmit} className=" px-4 py-2 border-2 border-red-500 text-red-600">Add</button>
       </div>
 
       {/* list all work  */}
@@ -39,17 +81,22 @@ const BreadcrumbComponent = ({ onBack, id, name }) => {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b bg-white hover:bg-gray-100">
-                <td className="px-6 py-4">2024-04-30</td>
+              {franchisework?.map((wok) => (
+                <tr key={wok.id} className="border-b bg-white hover:bg-gray-100">
+                <td className="px-6 py-4">{formatDate(wok.createdAt)}</td>
                 <td className="px-6 py-4">
-                  <a href="#" class="text-blue-500 hover:text-blue-800">
-                    View
-                  </a>
+                  {wok.detail}
                 </td>
-                <td className="px-6 py-4">Yes</td>
-                <td className="px-6 py-4"><button className=" px-2 py-2 border-2 border-red-500 text-red-600">Complete</button></td>
-                <td className="px-6 py-4 text-red-700 cursor-pointer">Remove</td>
+                <td className="px-6 py-4">{wok.completestatus}</td>
+                {wok.completestatus==='no' ? 
+                <td onClick={()=>handleComplete(wok.id)} className="px-6 py-4"><button className=" px-2 py-2 border-2 border-red-500 text-red-600">Complete</button></td>
+                 : 
+                 <td className="px-6 py-4"><button className=" px-2 py-2 border-2 border-green-500 text-green-600">Completed</button></td> }
+
+                <td onClick={() => handleDelete(wok.id)} className="px-6 py-4 text-red-700 cursor-pointer">Remove</td>
               </tr>
+              ))}
+              
               
             </tbody>
           </table>

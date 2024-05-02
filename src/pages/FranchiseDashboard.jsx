@@ -30,6 +30,11 @@ import useWithdraw from "../hooks/useWithdraw";
 import useBanner from "../hooks/useBanner";
 import useFranchise from "../hooks/useFranchise";
 import ProfileFranchise from "./ProfileFranchise";
+import { format } from 'date-fns';
+const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      return format(date, 'MMMM dd, yyyy hh:mm a');
+    };
 
 const FranchiseDashboard = () => {
   ///////toast state
@@ -57,14 +62,31 @@ const FranchiseDashboard = () => {
 
 //   const { getAllBanner } = useBanner();
 //   const [bann, setBann] = useState([]);
+const { logout, fetchWorkList } = useFranchise()
 
+const [workList, setWorkList] = useState([]);
+
+  useEffect(() => {
+    const fetchfranchiseworkData = async () => {
+      try {
+        const workk = await fetchWorkList(userData.id);
+        console.log('from useEffect',workk)
+        setWorkList(workk);
+      } catch (error) {
+        console.error('Error fetching banner data:', error);
+        // Handle error if necessary
+      }
+    };
+
+    fetchfranchiseworkData();
+  }, []);
   
 
   useEffect(() => {
     fetchLatestList();
   }, []);
 
-  const { logout } = useFranchise()
+  
 
   //console.log(user.user)
 
@@ -159,6 +181,11 @@ const FranchiseDashboard = () => {
   const handleCloseWork = () => setIsOpenWork(false);
   //
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'MMMM dd, yyyy hh:mm a');
+  };
+
   return (
     <>
       {/* // parent div */}
@@ -209,7 +236,7 @@ const FranchiseDashboard = () => {
                 <FaGear size={30} color="#e62e56" />
                 <h4>Total Work</h4>
               </div>
-              {/* <p>{userData.workgoingon}</p> */}
+              <p>{workList?.length}</p>
             </div>
 
             {/* card 2  */}
@@ -255,13 +282,15 @@ const FranchiseDashboard = () => {
       </tr>
     </thead>
     <tbody>
-      <tr className="border-b bg-white hover:bg-gray-100">
-        <td className="px-6 py-4">2024-04-30</td>
+      {workList?.map((work) => (
+        <tr key={work.id} className="border-b bg-white hover:bg-gray-100">
+        <td className="px-6 py-4">{formatDate(work.createdAt)}</td>
         <td className="px-6 py-4">
-          <a href="#" class="text-blue-500 hover:text-blue-800">View</a>
+          {work.detail}
         </td>
-        <td className="px-6 py-4">Yes</td>
+        <td className="px-6 py-4">{work.completestatus}</td>
       </tr>
+      ))}
       
       
     </tbody>
