@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setJob,clearJob, deleteJob } from "../features/adminJobSlice";
+import { setJob,clearJob, deleteJob,editJob } from "../features/adminJobSlice";
 
 import Cookie from "universal-cookie";
 
@@ -60,7 +60,7 @@ const useJob = () => {
       const ChangeJobManager = async (data) => {
         // console.log('from change manager Job', IDBIndex)
         try {
-          const response = await axios.delete(`http://localhost:8080/admin/change-job`,data,{
+          const response = await axios.patch(`http://localhost:8080/admin/change-manager`,data,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -68,12 +68,14 @@ const useJob = () => {
           const jobData = response.data;
           
 
-          console.log(jobData)
+          
 
-          if (response.data.success) {
-          dispatch(deleteJob(id))
+          if(!jobData){
+            return dispatch(clearJob())
           }
-
+          console.log(jobData)
+          dispatch(editJob(jobData))
+          return jobData
         } catch (error) {
           return dispatch(clearJob())
         }
@@ -104,7 +106,7 @@ const useJob = () => {
       };
 
     
-      return { fetchJobList, addJobRequest, deleteJobQuerry };
+      return { fetchJobList, addJobRequest, deleteJobQuerry, ChangeJobManager };
 }
 
 export default useJob;

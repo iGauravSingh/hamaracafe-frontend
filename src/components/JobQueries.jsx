@@ -71,6 +71,9 @@ const JobQueries = () => {
                             Affailate
                           </th>
                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                            Work
+                          </th>
+                          <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                             Managed By
                           </th>
                           <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6 lg:pr-8">
@@ -88,7 +91,8 @@ const JobQueries = () => {
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.name}</td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.mobile}</td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.affiliateCode}</td>
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><SemectManager jobid={person.id} /></td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.work}</td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><SemectManager jobid={person.id} currentManager={person.managedBy} /></td>
                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
                               <p onClick={()=>handleQueryRemove(person.id)} className="text-[#e62e56] hover:text-[#a51937e1] cursor-pointer">
                                 Remove

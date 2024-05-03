@@ -27,7 +27,7 @@ export const adminJobSlice = createSlice({
             const index = state.value.job.findIndex(jo => jo.id === editedJob.id);
 
             if(index !== -1){
-                state.value.job[index] = {...state.value.job[index], ...editedJob };
+                state.value.job[index] = editedJob;
             }
             state.value.isLoading = false;
         },
@@ -38,5 +38,5 @@ export const adminJobSlice = createSlice({
     }
 })
 
-export const { setJob, clearJob, deleteJob } = adminJobSlice.actions;
+export const { setJob, clearJob, deleteJob,editJob } = adminJobSlice.actions;
 export default adminJobSlice.reducer
