@@ -28,7 +28,7 @@ export const adminFranchiseWorkSlice = createSlice({
           },
           updateFranchiseWork: (state,action) => {
             const updateWork = action.payload
-            console.log('from usefranchise work slice',updateWork)
+            // console.log('from usefranchise work slice',updateWork)
             const indexWork = state.value.franchisework.findIndex((wok) => wok.id === updateWork.id)
             if(indexWork !== -1){
                 state.value.franchisework[indexWork] = updateWork

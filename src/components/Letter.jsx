@@ -25,7 +25,7 @@ const Letter = () => {
     formData.append("file", file)
     formData.append("imagename",imagename)
     formData.append("letterId", 1)
-      console.log(formData)
+      // console.log(formData)
       const rep = await addLetterImage(formData)
       if(rep.success) {
         setFile(null)

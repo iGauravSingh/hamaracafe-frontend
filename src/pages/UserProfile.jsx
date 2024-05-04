@@ -55,15 +55,15 @@ const UserProfile = ({userid,imageUrl, userName, affiliateCode, website, youtube
     if(!file){
       alert('Please choose some file')
     } else {
-        console.log('userid',userid)
+        // console.log('userid',userid)
       const imagename = uuidv4()
     const formData = new FormData()
     formData.append("file", file)
     formData.append("imagename",imagename)
     formData.append("userid",userid)
-      console.log(formData)
+      // console.log(formData)
       const imgup = await imageUpload(formData)
-      console.log(imgup)
+      // console.log(imgup)
       setFile(null)
       if(imgup.success){
         alert('profile picture updated please login again to see change')

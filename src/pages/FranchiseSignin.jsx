@@ -40,14 +40,14 @@ export default function FranchiseSignin() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    // console.log(data);
     const resp = await login(data);
     if (resp?.user) {
       // navigate to dashboard
       navigate("/franchisedashboard");
     } else {
       // display error
-      console.log(resp?.response?.data?.errors[0]?.msg);
+      // console.log(resp?.response?.data?.errors[0]?.msg);
       setErrMsg(resp?.response?.data?.errors[0]?.msg);
       setShow(true);
     }

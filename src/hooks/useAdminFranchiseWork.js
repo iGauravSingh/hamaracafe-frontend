@@ -9,26 +9,26 @@ import Cookie from "universal-cookie";
 const cookie = new Cookie();
 
 const urllocal = "http://localhost:8080";
-const urllive = "https://backerbackend.onrender.com";
+// const urllive = "https://backerbackend.onrender.com";
 
 
 
 
 const useAdminFranchiseWork = () => {
-    const sessionToken = cookie.get("session_token");
+    const sessionToken = cookie.get("admin_session_token");
     
     const dispatch = useDispatch()
 
       const fetchWorkList = async (id) => {
-        console.log('from useworl list')
+        // console.log('from useworl list')
         try {
-          const response = await axios.get(`http://localhost:8080/franchise/getall/${id}`);
+          const response = await axios.get(`${urllocal}/franchise/getall/${id}`);
           const latestData = response.data;
           if(!latestData){
             return dispatch(clearFranchisework())
           }
 
-          console.log(latestData)
+          // console.log(latestData)
           dispatch(setFranchisework(latestData))
         } catch (error) {
           return dispatch(clearFranchisework())
@@ -37,7 +37,7 @@ const useAdminFranchiseWork = () => {
 
       const addWorkUpdates = async (data) => {
         try {
-          const response = await axios.post('http://localhost:8080/franchise/addwork',data,{
+          const response = await axios.post(`${urllocal}/franchise/addwork`,data,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -48,17 +48,17 @@ const useAdminFranchiseWork = () => {
                   return dispatch(clearFranchisework())
                 }
       
-                console.log(latestData)
+                // console.log(latestData)
                 dispatch(addFranchisework(latestData))
         } catch (error) {
-          console.log("error from useLatest add", error)
+          // console.log("error from useLatest add", error)
           return dispatch(clearFranchisework())
         }
       }
 
       const deleteWorkUpdates = async (id) => {
         try {
-          const response = await axios.delete(`http://localhost:8080/franchise/deletework/${id}`, {
+          const response = await axios.delete(`${urllocal}/franchise/deletework/${id}`, {
             headers: {
               ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
             },
@@ -73,11 +73,11 @@ const useAdminFranchiseWork = () => {
 
       const updateWork = async (data) => {
         try {
-          const response = await axios.patch('http://localhost:8080/franchise/updatework', data)
+          const response = await axios.patch(`${urllocal}/franchise/updatework`, data)
           const updateWork = response.data
-          console.log(updateWork)
+          // console.log(updateWork)
           if(response.data?.id){
-            console.log(updateWork)
+            // console.log(updateWork)
             dispatch(updateFranchiseWork(updateWork))
           }
 

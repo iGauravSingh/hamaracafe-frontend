@@ -27,7 +27,7 @@ const HelpQueries = () => {
   
 
   const handleQueryRemove =(id) => {
-    console.log(id)
+    // console.log(id)
     deleteHelpQuerry(id)
   }
   

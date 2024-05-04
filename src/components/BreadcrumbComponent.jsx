@@ -23,7 +23,7 @@ const BreadcrumbComponent = ({ onBack, id, name }) => {
       alert("Input Feild Should Not Be Empty")
       return
     }
-    console.log({franchiseName: name,franchiseId: id,detail: text})
+    // console.log({franchiseName: name,franchiseId: id,detail: text})
     addWorkUpdates({franchiseName: name,franchiseId: id,detail: text})
   }
 
@@ -32,7 +32,7 @@ const BreadcrumbComponent = ({ onBack, id, name }) => {
   }
 
   const handleComplete =(workid) => {
-    console.log(workid)
+    // console.log(workid)
     updateWork({workid: workid,completestatus: "yes"})
   }
 

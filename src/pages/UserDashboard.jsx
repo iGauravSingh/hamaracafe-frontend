@@ -60,7 +60,7 @@ const UserDashboard = () => {
     const fetchBannerData = async () => {
       try {
         const banners = await getAllBanner();
-        console.log('from useEffect',banners)
+        // console.log('from useEffect',banners)
         setBann(banners);
       } catch (error) {
         console.error('Error fetching banner data:', error);
@@ -86,20 +86,20 @@ const UserDashboard = () => {
   const userData = user?.user;
 
   //console.log(user)
-
-  const encodedText = `https://hamaracafe.com/job-work-form2/?coupon=${userData.affiliateCode}`;
+  
+  const encodedText = `https://hamaracafe.in/job/?coupon=${userData.affiliateCode}`;
 
   const shareText = `Fill Forms From Home
-    https://hamaracafe.com/job-work-form2/?coupon=${userData.affiliateCode}`;
+  https://hamaracafe.in/job/?coupon=${userData.affiliateCode}`;
 
   const handleShare = () => {
-    console.log("share");
+    // console.log("share");
 
     window.open(`https://web.whatsapp.com/send?text=${shareText}`);
   };
 
   const handleCopy = () => {
-    console.log("copy");
+    // console.log("copy");
   };
 
   const handleLogout = () => {
@@ -123,10 +123,10 @@ const UserDashboard = () => {
     // check if drawAmt is more then net earning then send error
 
     // send withdraw request
-    console.log(drawAmt);
+    // console.log(drawAmt);
     const withReq = await requestWithdraw({ amount: drawAmt });
 
-    console.log(withReq);
+    // console.log(withReq);
     if (withReq.success === true) {
       // console.log('in withreq')
       setToastHead("Success");
@@ -152,7 +152,7 @@ const UserDashboard = () => {
   const handleHelpmessage = async () => {
     //
 
-    console.log(helpRef.current.value);
+    // console.log(helpRef.current.value);
     if (!helpRef.current.value) {
       alert("Please Add Your Query");
       return;

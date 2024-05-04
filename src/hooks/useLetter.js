@@ -6,8 +6,8 @@ import Cookie from "universal-cookie";
 
 const cookie = new Cookie();
 
-const urllocal = "http://localhost:8080";
-const urllive = "https://backerbackend.onrender.com";
+const urllocal = "http://3.6.32.146:8080";
+// const urllive = "https://backerbackend.onrender.com";
 
 
 const useLetter = () => {
@@ -15,23 +15,23 @@ const useLetter = () => {
 
     const addLetterImage = async (data) => {
         try {
-            const response = await axios.post(`http://localhost:8080/franchise/banner-upload`,data)
+            const response = await axios.post(`${urllocal}/franchise/banner-upload`,data)
             const imageData = response.data
-            console.log(imageData)
+            // console.log(imageData)
             return imageData
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
     }
 
     const getLetterBanner = async (data) => {
         try {
-            const response = await axios.get("http://localhost:8080/franchise/banner-fetch")
+            const response = await axios.get(`${urllocal}/franchise/banner-fetch`)
             const bannerData = response.data
-            console.log(bannerData)
+            // console.log(bannerData)
             return bannerData
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
     }
 

@@ -81,7 +81,7 @@ const AffaliateList = () => {
   };
 
   const handleUpdateWork = (id,work) => {
-    console.log(id,work)
+    // console.log(id,work)
     updateAffiliateWork(id,{workgoingon: work})
   }
 
@@ -110,7 +110,7 @@ const AffaliateList = () => {
     };
   
     const handleUpdateinquire = (id,inquire) => {
-      console.log(id,inquire)
+      // console.log(id,inquire)
       updateAffiliateInquiries(id,{totalInquiry: inquireValue})
     }
   
@@ -139,7 +139,7 @@ const AffaliateList = () => {
   };
 
   const handleUpdateEarning = (id,earn) => {
-    console.log(id,earn)
+    // console.log(id,earn)
     updateAffiliatetotalEarning(id,{totalEarning: earn})
   }
 

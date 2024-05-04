@@ -20,7 +20,7 @@ const SemectManager = ({jobid, currentManager}) => {
         
         const resp = await ChangeJobManager({ jobId: jobid, managerName: selectedName });
 
-        console.log(resp)
+        // console.log(resp)
         if(resp.id){
           alert(`selected job query id ${jobid} selected manager ${selectedName}`)
         }

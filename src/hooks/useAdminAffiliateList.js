@@ -8,8 +8,8 @@ import Cookie from "universal-cookie";
 
 const cookie = new Cookie();
 
-const urllocal = "http://localhost:8080";
-const urllive = "https://backerbackend.onrender.com";
+const urllocal = "http://3.6.32.146:8080";
+// const urllive = "https://backerbackend.onrender.com";
 
 
 
@@ -21,7 +21,7 @@ const useAdminAffilateList = () => {
 
       const fetchAffilateList = async () => {
         try {
-          const response = await axios.get('http://localhost:8080/admin/getallAffiliates',{
+          const response = await axios.get(`${urllocal}/admin/getallAffiliates`,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -31,7 +31,7 @@ const useAdminAffilateList = () => {
             return dispatch(clearAffiliateUsers())
           }
 
-          console.log(affilateData)
+          // console.log(affilateData)
           dispatch(setAffiliateUsers(affilateData))
         } catch (error) {
           return dispatch(clearAffiliateUsers())
@@ -40,7 +40,7 @@ const useAdminAffilateList = () => {
 
       const updateAffiliateWork = async (id, data) => {
         try {
-            const response = await axios.patch(`http://localhost:8080/admin/updateaffwork/${id}`, data, {
+            const response = await axios.patch(`${urllocal}/admin/updateaffwork/${id}`, data, {
                 headers: {
                     'Content-Type': 'application/json',
                     ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
@@ -56,7 +56,7 @@ const useAdminAffilateList = () => {
 
     const updateAffiliateInquiries = async (id, data) => {
       try {
-          const response = await axios.patch(`http://localhost:8080/admin/updateainquires/${id}`, data, {
+          const response = await axios.patch(`${urllocal}/admin/updateainquires/${id}`, data, {
               headers: {
                   'Content-Type': 'application/json',
                   ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
@@ -72,7 +72,7 @@ const useAdminAffilateList = () => {
 
   const updateAffiliatetotalEarning = async (id, data) => {
     try {
-        const response = await axios.patch(`http://localhost:8080/admin/updateeraning/${id}`, data, {
+        const response = await axios.patch(`${urllocal}/admin/updateeraning/${id}`, data, {
             headers: {
                 'Content-Type': 'application/json',
                 ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),

@@ -7,8 +7,8 @@ import Cookie from "universal-cookie";
 
 const cookie = new Cookie();
 
-const urllocal = "http://localhost:8080";
-const urllive = "https://backerbackend.onrender.com";
+const urllocal = "http://3.6.32.146:8080";
+// const urllive = "https://backerbackend.onrender.com";
 
 
 
@@ -20,7 +20,7 @@ const useLatest = () => {
 
       const fetchLatestList = async () => {
         try {
-          const response = await axios.get('http://localhost:8080/admin/getallLatest',{
+          const response = await axios.get(`${urllocal}/admin/getallLatest`,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -30,7 +30,7 @@ const useLatest = () => {
             return dispatch(clearLatest())
           }
 
-          console.log(latestData)
+          // console.log(latestData)
           dispatch(setLatest(latestData))
         } catch (error) {
           return dispatch(clearLatest())
@@ -39,7 +39,7 @@ const useLatest = () => {
 
       const addLatestUpdates = async (data) => {
         try {
-          const response = await axios.post('http://localhost:8080/admin/addLatest',data,{
+          const response = await axios.post(`${urllocal}/admin/addLatest`,data,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -50,17 +50,17 @@ const useLatest = () => {
                   return dispatch(clearLatest())
                 }
       
-                console.log(latestData)
+                // console.log(latestData)
                 dispatch(addLatest(latestData))
         } catch (error) {
-          console.log("error from useLatest add", error)
+          // console.log("error from useLatest add", error)
           return dispatch(clearLatest())
         }
       }
 
       const deleteLatestUpdates = async (id) => {
         try {
-          const response = await axios.delete(`http://localhost:8080/admin/deleteLatest/${id}`, {
+          const response = await axios.delete(`${urllocal}/admin/deleteLatest/${id}`, {
             headers: {
               ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
             },

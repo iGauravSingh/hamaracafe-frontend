@@ -13,7 +13,7 @@ const LatestUpdates = () => {
 
     const { addLatestUpdates, deleteLatestUpdates } = useLatest()
 
-    console.log('from latUpp jsx',latest)
+    // console.log('from latUpp jsx',latest)
 
 
     const [latestText,setLatestText] = useState('')

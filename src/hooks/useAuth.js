@@ -5,7 +5,7 @@ import { clearUser, setUser } from "../features/userSlice";
 
 const cookie = new Cookie();
 
-const urllocal = "http://localhost:8080";
+const urllocal = "http://3.6.32.146:8080";
 const urllive = "https://backerbackend.onrender.com";
 
 const useAuth = () => {
@@ -20,7 +20,7 @@ const useAuth = () => {
             email,
             password,
           });
-          console.log("from useAuth ", response.data);
+          // console.log("from useAuth ", response.data);
           const { user, token } = response.data;
           cookie.set("session_token", token);
           dispatch(
@@ -65,7 +65,7 @@ const useAuth = () => {
     // const { user, token } = response.data;
     // cookie.set("session_token", token);
     // dispatch(setUser({ email: user.email, username: user.username }));
-    console.log(response.data)
+    // console.log(response.data)
     return response.data;
     } catch (error) {
       return error
@@ -76,10 +76,10 @@ const useAuth = () => {
     try {
       // console.log('from useAuth')
       const response = await axios.patch(`${urllocal}/affaliate/imageupload`, data);
-      console.log(response.data)
+      // console.log(response.data)
       return response.data
     } catch (error) {
-      
+      console.log('error',error)
     }
   }
 
@@ -91,7 +91,7 @@ const useAuth = () => {
         },
       })
 
-      console.log(response.data)
+      // console.log(response.data)
     } catch (error) {
       console.log(error)
     }

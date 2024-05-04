@@ -35,14 +35,14 @@ export default function AffailateSignUp() {
         alert('Atleast one of youtube, website, instagram should be provided')
         return
     }
-    console.log(data);
+    // console.log(data);
     const resp = await signup(data)
     if (resp?.user) {
       // navigate to dashboard
       navigate("/signin");
     } else {
       // display error
-      console.log(resp?.response?.data?.errors[0]?.msg);
+      // console.log(resp?.response?.data?.errors[0]?.msg);
       setErrMsg(resp?.response?.data?.errors[0]?.msg);
       setShow(true);
     }

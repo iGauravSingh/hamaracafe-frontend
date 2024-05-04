@@ -7,8 +7,8 @@ import Cookie from "universal-cookie";
 
 const cookie = new Cookie();
 
-const urllocal = "http://localhost:8080";
-const urllive = "https://backerbackend.onrender.com";
+const urllocal = "http://3.6.32.146:8080";
+// const urllive = "https://backerbackend.onrender.com";
 
 
 
@@ -21,7 +21,7 @@ const useHelp = () => {
     // used by admin
       const fetchHelpList = async () => {
         try {
-          const response = await axios.get('http://localhost:8080/admin/getallHelp',{
+          const response = await axios.get(`${urllocal}/admin/getallHelp`,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -31,7 +31,7 @@ const useHelp = () => {
             return dispatch(clearHelp())
           }
 
-          console.log(helpData)
+          // console.log(helpData)
           dispatch(setHelp(helpData))
         } catch (error) {
           return dispatch(clearHelp())
@@ -40,9 +40,9 @@ const useHelp = () => {
 
       // used by user add-querry
       const addHelp = async (data) => {
-        console.log('from addhElp', data)
+        // console.log('from addhElp', data)
         try {
-          const response = await axios.post('http://localhost:8080/help/add-querry',data,{
+          const response = await axios.post(`${urllocal}/help/add-querry`,data,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -50,7 +50,7 @@ const useHelp = () => {
           const helpData = response.data;
           
 
-          console.log(helpData)
+          // console.log(helpData)
           return helpData
         } catch (error) {
           return dispatch(clearHelp())
@@ -61,7 +61,7 @@ const useHelp = () => {
       const deleteHelpQuerry = async (id) => {
         // console.log('from delete help', IDBIndex)
         try {
-          const response = await axios.delete(`http://localhost:8080/help/delete-query/${id}`,{
+          const response = await axios.delete(`${urllocal}/help/delete-query/${id}`,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -69,7 +69,7 @@ const useHelp = () => {
           const helpData = response.data;
           
 
-          console.log(helpData)
+          // console.log(helpData)
 
           if (response.data.success) {
           dispatch(deleteHelp(id))

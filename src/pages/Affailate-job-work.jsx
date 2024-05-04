@@ -57,7 +57,7 @@ export default function AffailateJobWork() {
 
   const onSubmit = async (data) => {
     setLoadingHelp(true)
-    console.log(data)
+    // console.log(data)
     const response = await addJobRequest({name: data.name, mobile: data.phone, affiliateCode: querycode, work: data.work})
     if(response.success){
       setToastHead("Success")

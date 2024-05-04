@@ -5,7 +5,7 @@ import { clearAdmin, setAdmin } from "../features/adminSlice";
 
 const cookie = new Cookie();
 
-const urllocal = "http://localhost:8080";
+const urllocal = "http://3.6.32.146:8080";
 const urllive = "https://backerbackend.onrender.com";
 
 // This is useADmin hook used for fetching admin credentials from server and storing token and other data in redux store
@@ -17,10 +17,10 @@ const useAdmin = () => {
     const login = async (data) => {
         try {
             const response = await axios.post(`${urllocal}/admin/admin-login`, data);
-              console.log("from useAdmin ", response.data);
+              // console.log("from useAdmin ", response.data);
               const { user, token } = response.data;
               cookie.set("admin_session_token", token);
-              console.log(user)
+              // console.log(user)
               dispatch(
                 setAdmin({
                     email: user.email,
@@ -57,7 +57,7 @@ const useAdmin = () => {
             },
           })
     
-          console.log(response.data)
+          // console.log(response.data)
         } catch (error) {
           console.log(error)
         }

@@ -7,8 +7,8 @@ import Cookie from "universal-cookie";
 
 const cookie = new Cookie();
 
-const urllocal = "http://localhost:8080";
-const urllive = "https://backerbackend.onrender.com";
+const urllocal = "http://3.6.32.146:8080";
+// const urllive = "https://backerbackend.onrender.com";
 
 
 
@@ -20,7 +20,7 @@ const useWithdraw = () => {
 
       const fetchWithdrawList = async () => {
         try {
-          const response = await axios.get('http://localhost:8080/admin/getallwithdraw',{
+          const response = await axios.get(`${urllocal}/admin/getallwithdraw`,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -30,7 +30,7 @@ const useWithdraw = () => {
             return dispatch(clearWithdraw())
           }
 
-          console.log(withdrawData)
+          // console.log(withdrawData)
           dispatch(setWithdraw(withdrawData))
         } catch (error) {
           return dispatch(clearWithdraw())
@@ -39,7 +39,7 @@ const useWithdraw = () => {
 
       const requestWithdraw = async (data) => {
         try {
-          const response = await axios.post('http://localhost:8080/admin/addwithdraw',data,{
+          const response = await axios.post(`${urllocal}/admin/addwithdraw`,data,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -49,7 +49,7 @@ const useWithdraw = () => {
           //   return dispatch(clearWithdraw())
           // }
 
-          console.log(withdrawData)
+          // console.log(withdrawData)
           return withdrawData
           // dispatch(setWithdraw(withdrawData))
         } catch (error) {
@@ -61,7 +61,7 @@ const useWithdraw = () => {
       const deleteWithdrawQuery = async (id) => {
         // console.log('from delete help', IDBIndex)
         try {
-          const response = await axios.delete(`http://localhost:8080/admin/delete-withdraw/${id}`,{
+          const response = await axios.delete(`${urllocal}/admin/delete-withdraw/${id}`,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -69,7 +69,7 @@ const useWithdraw = () => {
           const withdrawData = response.data;
           
 
-          console.log(withdrawData)
+          // console.log(withdrawData)
 
           if (response.data.success) {
           dispatch(deleteWithdraw(id))

@@ -41,14 +41,14 @@ export default function FranchiseSignup() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    // console.log(data);
     const resp = await signup(data);
     if (resp?.user) {
       // navigate to dashboard
       navigate("/franchisesignin");
     } else {
     //   display error
-      console.log(resp?.response?.data?.errors[0]?.msg);
+      // console.log(resp?.response?.data?.errors[0]?.msg);
       setErrMsg(resp?.response?.data?.errors[0]?.msg);
       setShow(true);
     }
@@ -108,11 +108,17 @@ export default function FranchiseSignup() {
                         name="name"
                         type="text"
                         autoComplete="name"
-                        {...register("name", { required: true })}
+                        {...register("name", { 
+                          required: "Name is required",
+                          minLength: {
+                            value: 3,
+                            message: "Name must be at least 3 characters long"
+                          }
+                        })}
                         className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                       {errors.name && (
-                        <span className="text-red-500">Name is required</span>
+                        <span className="text-red-500">{errors.name.message}</span>
                       )}
                     </div>
                   </div>
@@ -164,13 +170,16 @@ export default function FranchiseSignup() {
                         name="password"
                         type="password"
                         autoComplete="current-password"
-                        {...register("password", { required: true })}
+                        {...register("password", { required: "Password is required",
+                        minLength: {
+                          value: 5,
+                          message: "Password must be at least 5 characters long"
+                        }
+                         })}
                         className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                       {errors.password && (
-                        <span className="text-red-500">
-                          Password is required
-                        </span>
+                        <span className="text-red-500">{errors.password.message}</span>
                       )}
                     </div>
                   </div>

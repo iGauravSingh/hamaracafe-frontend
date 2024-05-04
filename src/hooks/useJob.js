@@ -7,8 +7,8 @@ import Cookie from "universal-cookie";
 
 const cookie = new Cookie();
 
-const urllocal = "http://localhost:8080";
-const urllive = "https://backerbackend.onrender.com";
+const urllocal = "http://3.6.32.146:8080";
+// const urllive = "https://backerbackend.onrender.com";
 
 
 
@@ -20,7 +20,7 @@ const useJob = () => {
 
       const fetchJobList = async () => {
         try {
-          const response = await axios.get('http://localhost:8080/admin/getallJob',{
+          const response = await axios.get(`${urllocal}/admin/getallJob`,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -30,7 +30,7 @@ const useJob = () => {
             return dispatch(clearJob())
           }
 
-          console.log(jobData)
+          // console.log(jobData)
           dispatch(setJob(jobData))
         } catch (error) {
           return dispatch(clearJob())
@@ -40,7 +40,7 @@ const useJob = () => {
       // add Job By User
       const addJobRequest = async (data) => {
         try {
-          const response = await axios.post('http://localhost:8080/admin/addjob',data,{
+          const response = await axios.post(`${urllocal}/admin/addjob`,data,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -48,7 +48,7 @@ const useJob = () => {
           const jobData = response.data;
           
 
-          console.log(jobData)
+          // console.log(jobData)
           return jobData
         } catch (error) {
           console.log(error)
@@ -60,7 +60,7 @@ const useJob = () => {
       const ChangeJobManager = async (data) => {
         // console.log('from change manager Job', IDBIndex)
         try {
-          const response = await axios.patch(`http://localhost:8080/admin/change-manager`,data,{
+          const response = await axios.patch(`${urllocal}/admin/change-manager`,data,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -73,7 +73,7 @@ const useJob = () => {
           if(!jobData){
             return dispatch(clearJob())
           }
-          console.log(jobData)
+          // console.log(jobData)
           dispatch(editJob(jobData))
           return jobData
         } catch (error) {
@@ -84,9 +84,9 @@ const useJob = () => {
       // remove Job
       // used by admin
       const deleteJobQuerry = async (id) => {
-        console.log('from delete Job', IDBIndex)
+        // console.log('from delete Job', IDBIndex)
         try {
-          const response = await axios.delete(`http://localhost:8080/admin/delete-job/${id}`,{
+          const response = await axios.delete(`${urllocal}/admin/delete-job/${id}`,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -94,7 +94,7 @@ const useJob = () => {
           const jobData = response.data;
           
 
-          console.log(jobData)
+          // console.log(jobData)
 
           if (response.data.success) {
           dispatch(deleteJob(id))

@@ -15,7 +15,7 @@ const BannerUpload = () => {
     }
   };
 
-  const handleUpload = (id) => {
+  const handleUpload = async (id) => {
     if(!file){
       alert('Please choose some file')
     } else {
@@ -24,9 +24,12 @@ const BannerUpload = () => {
     formData.append("file", file)
     formData.append("imagename",imagename)
     formData.append("buttonId", id)
-      console.log(formData)
-      addBannerImage(formData)
+      // console.log(formData)
+      const repp = await addBannerImage(formData)
       setFile(null)
+      if(repp?.success){
+        alert('Image uploaded succefully')
+      }
     }
     
   }

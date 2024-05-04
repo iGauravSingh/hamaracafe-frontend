@@ -26,14 +26,14 @@ const AdminLogin = () => {
     } = useForm();
   
     const onSubmit = async (data) => {
-      console.log(data);
+      // console.log(data);
       const resp = await login(data);
       if (resp?.user) {
         // navigate to admindashboard
         navigate("/admindashboard");
       } else {
         // display error
-        console.log(resp?.response?.data?.errors[0]?.msg);
+        // console.log(resp?.response?.data?.errors[0]?.msg);
         setErrMsg(resp?.response?.data?.errors[0]?.msg);
         setShow(true);
       }

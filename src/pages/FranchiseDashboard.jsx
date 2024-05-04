@@ -76,7 +76,7 @@ const [letterList, setLetterList] = useState([])
     const fetchfranchiseworkData = async () => {
       try {
         const workk = await fetchWorkList(userData.id);
-        console.log('from useEffect',workk)
+        // console.log('from useEffect',workk)
         setWorkList(workk);
       } catch (error) {
         console.error('Error fetching banner data:', error);
@@ -92,7 +92,7 @@ const [letterList, setLetterList] = useState([])
     const fetchLetterData = async () => {
       try {
         const letterr = await fetchLetter();
-        console.log('from useEffect',letterr[0].letterLink)
+        // console.log('from useEffect',letterr[0].letterLink)
         setLetterList(letterr[0].letterLink);
       } catch (error) {
         console.error('Error fetching banner data:', error);
