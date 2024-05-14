@@ -5,8 +5,8 @@ import { clearAdmin, setAdmin } from "../features/adminSlice";
 
 const cookie = new Cookie();
 
-const urllocal = "http://3.6.32.146:8080";
-const urllive = "https://backerbackend.onrender.com";
+const urllocal = "https://api.hamaracafe.in";
+// const urllive = "https://backerbackend.onrender.com";
 
 // This is useADmin hook used for fetching admin credentials from server and storing token and other data in redux store
 
@@ -63,7 +63,19 @@ const useAdmin = () => {
         }
       }
 
-      return { login, logout,changePassword };
+      const changeUserPassword = async(data) => {
+        try {
+          const response = await axios.patch(`${urllocal}/admin/user-password-update`, data, {
+            headers: {
+              ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
+            },
+          })
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      return { login, logout,changePassword,changeUserPassword };
 }
 
 export default useAdmin;

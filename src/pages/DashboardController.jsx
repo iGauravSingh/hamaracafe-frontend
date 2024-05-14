@@ -20,7 +20,7 @@ const DashboardController = () => {
     <div>
         {/* upside Selector  */}
         <div className=' '>
-        <div className=' w-screen h-12 bg-[#e62e56] flex justify-center items-center gap-10'>
+        <div className=' h-12 bg-[#e62e56] flex justify-center items-center gap-10'>
             <p onClick={() => setDashboardState('aff')} className={` text-xl text-white font-sans border-b-8 ${dashboardState === 'aff' ? 'border-white' : 'border-[#e62e56]'} cursor-pointer`}>Affailate Dashboard</p>
             <p onClick={() => setDashboardState('fra')} className={` text-xl text-white font-sans border-b-8 ${dashboardState === 'fra' ? 'border-white' : 'border-[#e62e56]'} cursor-pointer`}>Franchise Dashboard</p>
         </div>

@@ -2,6 +2,8 @@ import React, { useState, Fragment } from "react";
 import { useForm } from "react-hook-form";
 import useJob from "../hooks/useJob";
 
+import { useSearchParams } from "react-router-dom";
+
 // toast related
 import { Transition } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
@@ -30,7 +32,12 @@ import three from '../assets/three.jpg'
 */
 export default function AffailateJobWork() {
 
+
+    const [searchParam] = useSearchParams()
+    const myCoupon = searchParam.get("coupon") 
+
     const [querycode, setQuerycode] = useState('hamara/111')
+
 
      //////// Button Loading
   const [loadingJob, setLoadingHelp] = useState(false);
@@ -58,10 +65,15 @@ export default function AffailateJobWork() {
   const onSubmit = async (data) => {
     setLoadingHelp(true)
     // console.log(data)
+    if(myCoupon){
+      setQuerycode(myCoupon)
+    } 
+
+    console.log({name: data.name, mobile: data.phone, affiliateCode: querycode, work: data.work})
     const response = await addJobRequest({name: data.name, mobile: data.phone, affiliateCode: querycode, work: data.work})
     if(response.success){
       setToastHead("Success")
-      setToastMsg("Request Submitted")
+      setToastMsg("Your request has been received, we will contact you soon.")
       setShow(true)
     } else {
       setToastHead("Error")
@@ -71,27 +83,27 @@ export default function AffailateJobWork() {
 
 
    // Function to parse query parameters from URL
-   function getQueryVariable(variable) {
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] === variable) {
-            return pair[1];
-        }
-    }
-    return false;
-}
+//    function getQueryVariable(variable) {
+//     var query = window.location.search.substring(1);
+//     var vars = query.split("&");
+//     for (var i = 0; i < vars.length; i++) {
+//         var pair = vars[i].split("=");
+//         if (pair[0] === variable) {
+//             return pair[1];
+//         }
+//     }
+//     return false;
+// }
 
   // Set default value for Refer Code field
-  window.onload = function () {
-    var couponCode = getQueryVariable("coupon");
-    if (couponCode) {
-        setQuerycode(couponCode);
-    } else {
-        setQuerycode("");
-    }
-};
+//   window.onload = function () {
+//     var couponCode = getQueryVariable("coupon");
+//     if (couponCode) {
+//         setQuerycode(couponCode);
+//     } else {
+//         setQuerycode("");
+//     }
+// };
 
   return (
     <>
@@ -113,7 +125,7 @@ export default function AffailateJobWork() {
                 alt="Your Company"
               />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                Job Work Form
+              Online Work Request Form
               </h2>
               {/* <p className="mt-2 text-sm leading-6 text-gray-500">
                   Not a member?{' '}
@@ -211,7 +223,7 @@ export default function AffailateJobWork() {
                   </div>
 
                   {/* query code  */}
-                  {querycode !=='hamara/111' && (
+                  {myCoupon && (
                     <div>
                     <label
                       htmlFor="affcode"
@@ -220,7 +232,7 @@ export default function AffailateJobWork() {
                       Affailate Code
                     </label>
                     <div className="mt-2">
-                      <p className="block w-full h-9 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">{querycode}</p>
+                      <p className="block w-full h-9 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">{myCoupon}</p>
                       
                     </div>
                   </div>

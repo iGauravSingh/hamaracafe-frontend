@@ -39,6 +39,7 @@ export default function AffailateSignUp() {
     const resp = await signup(data)
     if (resp?.user) {
       // navigate to dashboard
+      alert('Thank you for your interest in joining our affiliate program! We will contact you soon.')
       navigate("/signin");
     } else {
       // display error
@@ -85,7 +86,7 @@ export default function AffailateSignUp() {
                 alt="Your Company"
               />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                Affailate Sign Up
+              Affiliate Sign Up
               </h2>
             </div>
 
@@ -312,7 +313,7 @@ export default function AffailateSignUp() {
                       type="submit"
                       className="flex w-full justify-center rounded-md bg-[#e62e56] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Sign up
+                      Send for Approval.
                     </button>
                   </div>
                 </form>

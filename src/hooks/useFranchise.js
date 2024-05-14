@@ -6,7 +6,7 @@ import { clearFranchiseUsers, setFranchiseUsers, updateFranchiseUsers } from "..
 
 const cookie = new Cookie();
 
-const urllocal = "http://3.6.32.146:8080";
+const urllocal = "https://api.hamaracafe.in";
 // const urllive = "https://backerbackend.onrender.com";
 
 const useFranchise = () => {

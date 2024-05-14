@@ -8,7 +8,7 @@ import Cookie from "universal-cookie";
 
 const cookie = new Cookie();
 
-const urllocal = "http://localhost:8080";
+const urllocal = "https://api.hamaracafe.in";
 // const urllive = "https://backerbackend.onrender.com";
 
 

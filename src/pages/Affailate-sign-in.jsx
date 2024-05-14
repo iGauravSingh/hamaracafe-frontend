@@ -72,7 +72,7 @@ export default function AffailateSignIn() {
                 alt="Your Company"
               />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                Sign in to your account
+                Sign in to your Affiliate account
               </h2>
               {/* <p className="mt-2 text-sm leading-6 text-gray-500">
                   Not a member?{' '}

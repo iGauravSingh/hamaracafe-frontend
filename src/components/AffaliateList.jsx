@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "./Modal";
 import { useSelector } from "react-redux";
 import useAdminAffilateList from "../hooks/useAdminAffiliateList";
+import useAdmin from "../hooks/useAdmin";
 
 // const people = [
 //   {
@@ -36,20 +37,38 @@ const AffaliateList = () => {
   const { affiliateUsers, isLoading } = useSelector((state) => state.affiliateUsers.value)
 
   const { updateAffiliateWork, updateAffiliateInquiries, updateAffiliatetotalEarning } = useAdminAffilateList()
-
+  const { changeUserPassword } = useAdmin()
   const people = affiliateUsers
+
+  // USER PASSWORD RESET 
+
+  const passwordResetRef = useRef(null)
+  const handlePasswordReset = () => {
+    // Check if the input element exists and focus it
+    if (passwordResetRef.current) {
+      passwordResetRef.current.focus();
+      // console.log(passwordResetRef.current.value); // Log the current value of the input to the console
+      // console.log({adminpassword: passwordResetRef.current.value, userEmail: selectedUserEmail })
+      changeUserPassword({adminpassword: passwordResetRef.current.value, userEmail: selectedUserEmail })
+    }
+  };
   
+  //
 
   //   Profile modal variable
   const [isOpenEdit, setIsOpenEdit] = useState(false);
+  const [selectedUser,setSelectedUser] = useState('user')
+  const [selectedUserEmail, setSelectedUserEmail] = useState('')
   const [selectedIdToEdit, setSelectedIdToEdit] = useState(null);
   const [selectedWorkToEdit, setSelectedWorkToEdit] = useState(null);
   const [selectedInquiryToEdit, setSelectedInquiryToEdit] = useState(null)
   const [selectedEarningToEdit, setSelectedEarningToEdit] = useState(null);
 
-  const handleOpenEdit = (id, name, workgoingon, totalInquiry,earning) => {
+  const handleOpenEdit = (id, name,email, workgoingon, totalInquiry,earning) => {
     setIsOpenEdit(true);
     setSelectedIdToEdit(id);
+    setSelectedUser(name)
+    setSelectedUserEmail(email)
     setSelectedWorkToEdit(workgoingon);
     setSelectedInquiryToEdit(totalInquiry)
     setSelectedEarningToEdit(earning);
@@ -281,9 +300,10 @@ const AffaliateList = () => {
                           handleOpenEdit(
                             person.id,
                             person.name,
+                            person.email,
                             person.workgoingon,
                             person.totalInquiry,
-                            person.earning
+                            person.totalMoney
                           )
                         }
                         className="text-[#e62e56] hover:text-[#a51937e1] cursor-pointer"
@@ -301,9 +321,10 @@ const AffaliateList = () => {
 
       {/* Modal Edit Work , inquire and Earning */}
       <div>
+        
         <Modal isOpen={isOpenEdit} onClose={handleCloseEdit}>
           <h3 className=" text-lg font-bold">
-            Work Going On, Inquire and Earning Edit Form
+            {selectedUser} Work Going On, Inquire and Earning Edit Form
           </h3>
 
           <div className=" flex gap-5">
@@ -404,6 +425,13 @@ const AffaliateList = () => {
             <button onClick={()=>handleUpdateEarning(selectedIdToEdit,earning)} className=" border-2 border-[#e62e56] px-1 py-1 text-[#e62e56] cursor-pointer mt-2">
               Update Earning
             </button>
+          </div>
+
+          {/* reset password  */}
+          <div className=" flex flex-col justify-center items-center border-t-2 border-[#e62e56]">
+            <p>Reset The {selectedUser} Password</p>
+            <input ref={passwordResetRef} type="text" placeholder="Please Enter Your Admin Password" className=" w-64 outline-none border-2 border-[#e62e56]" />
+            <button onClick={handlePasswordReset} className="  w-64 mt-1 border-2 border-[#e62e56] text-[#e62e56] px-1">Reset Password</button>
           </div>
         </Modal>
       </div>

@@ -79,6 +79,8 @@ const UserDashboard = () => {
 
   //console.log(user.user)
 
+ 
+
   if (!user.user) {
     return <Unauthorized />;
   }
@@ -121,9 +123,18 @@ const UserDashboard = () => {
   const handleWithdrawRequest = async () => {
     setDraw(false);
     // check if drawAmt is more then net earning then send error
+    if(drawAmt === 0){
+      alert("Invalid Amount!")
+      return
+    }
+    if(drawAmt > userData.totalMoney){
+      alert("Cannot Withdraw More Then In Account!")
+      return
+    }
 
     // send withdraw request
     // console.log(drawAmt);
+
     const withReq = await requestWithdraw({ amount: drawAmt });
 
     // console.log(withReq);
@@ -392,7 +403,7 @@ const UserDashboard = () => {
             <div className=" w-[300px] flex flex-col gap-4 mt-2">
               <div className=" flex justify-between">
                 <p>Total Money</p>
-                <p className=" font-bold">₹400</p>
+                <p className=" font-bold">{userData.totalMoney}</p>
               </div>
               <div className=" flex flex-col justify-center">
                 <button
