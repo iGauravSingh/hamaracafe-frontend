@@ -70,6 +70,8 @@ const useAdmin = () => {
               ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
             },
           })
+          // console.log(response.data)
+          return response.data
         } catch (error) {
           console.log(error)
         }

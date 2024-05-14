@@ -28,10 +28,13 @@ const UserProfile = ({userid,imageUrl, userName, affiliateCode, website, youtube
         setPass(false)
     }
 
-    const handlepasswordSubmit  =() => {
+    const handlepasswordSubmit  =async () => {
       if(passText || conPassText){
       if(passText === conPassText){
-        changePassword({password: passText})
+        const repp = await changePassword({password: passText})
+        if(repp.msg === 'success'){
+          alert("password changed")
+        }
       } else {
         alert('Password And Confirm Password Value Should Be Same.')
       }

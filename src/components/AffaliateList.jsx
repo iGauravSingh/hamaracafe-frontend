@@ -43,13 +43,23 @@ const AffaliateList = () => {
   // USER PASSWORD RESET 
 
   const passwordResetRef = useRef(null)
-  const handlePasswordReset = () => {
+  const handlePasswordReset = async () => {
     // Check if the input element exists and focus it
+    if(!passwordResetRef.current.value){
+      alert("Admin Password cannot be empty")
+      return
+    }
     if (passwordResetRef.current) {
       passwordResetRef.current.focus();
       // console.log(passwordResetRef.current.value); // Log the current value of the input to the console
       // console.log({adminpassword: passwordResetRef.current.value, userEmail: selectedUserEmail })
-      changeUserPassword({adminpassword: passwordResetRef.current.value, userEmail: selectedUserEmail })
+      const repp = await changeUserPassword({adminpassword: passwordResetRef.current.value, userEmail: selectedUserEmail })
+      // console.log(repp)
+      if(repp.msg === 'success'){
+        alert('password reset')
+      }
+    } else {
+      alert("Admin Password cannot be empty")
     }
   };
   

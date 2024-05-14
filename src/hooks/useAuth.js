@@ -90,7 +90,8 @@ const useAuth = () => {
           ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
         },
       })
-
+      // console.log(response.data)
+      return response.data
       // console.log(response.data)
     } catch (error) {
       console.log(error)
