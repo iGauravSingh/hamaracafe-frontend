@@ -16,7 +16,7 @@ const ChangePasswordAdmin = () => {
     setConPass(e.target.value)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if(pass && conPass && pass !== conPass){
       alert('Password and Cofirm Password are different')
       return
@@ -24,7 +24,15 @@ const ChangePasswordAdmin = () => {
       alert('Password feild can not be empty')
       return
     }
-    changePassword({password: pass})
+    const newPass = await changePassword({password: pass})
+    if(newPass.msg === "success"){
+      setPass('')
+      setConPass('')
+      alert("Password Changed Success fully")
+    } else {
+      alert("network error")
+    }
+    ////////////////////////////////////////////////////////////
   }
 
   return (

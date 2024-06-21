@@ -44,6 +44,8 @@ export default function AffailateJobWork() {
 
   ////////
 
+  var querypara = "hamara/111"
+
     ///////toast state
     const [show, setShow] = useState(false);
 
@@ -64,13 +66,13 @@ export default function AffailateJobWork() {
 
   const onSubmit = async (data) => {
     setLoadingHelp(true)
-    // console.log(data)
+    console.log('before submitting coupon value', myCoupon)
     if(myCoupon){
-      setQuerycode(myCoupon)
+      querypara = myCoupon
     } 
 
-    console.log({name: data.name, mobile: data.phone, affiliateCode: querycode, work: data.work})
-    const response = await addJobRequest({name: data.name, mobile: data.phone, affiliateCode: querycode, work: data.work})
+    console.log({name: data.name, mobile: data.phone, affiliateCode: querypara, work: data.work})
+    const response = await addJobRequest({name: data.name, mobile: data.phone, affiliateCode: querypara, work: data.work})
     if(response.success){
       setToastHead("Success")
       setToastMsg("Your request has been received, we will contact you soon.")

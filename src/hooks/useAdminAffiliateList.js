@@ -48,6 +48,7 @@ const useAdminAffilateList = () => {
             });
             const updatedAffiliate = response.data;
             dispatch(updateAffiliateUser(updatedAffiliate));
+            return updatedAffiliate
         } catch (error) {
             console.error("Failed to update affiliate:", error);
             // Optionally handle errors differently
@@ -64,6 +65,7 @@ const useAdminAffilateList = () => {
           });
           const updatedAffiliate = response.data;
           dispatch(updateAffiliateUser(updatedAffiliate));
+          return updatedAffiliate
       } catch (error) {
           console.error("Failed to update affiliate:", error);
           // Optionally handle errors differently
@@ -80,6 +82,7 @@ const useAdminAffilateList = () => {
         });
         const updatedAffiliate = response.data;
         dispatch(updateAffiliateUser(updatedAffiliate));
+        return updatedAffiliate
     } catch (error) {
         console.error("Failed to update affiliate:", error);
         // Optionally handle errors differently

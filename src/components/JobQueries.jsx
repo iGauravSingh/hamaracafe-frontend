@@ -17,9 +17,15 @@ const JobQueries = () => {
 
   const { job, isLoading } = useSelector((state) => state.job.value)
 
+  const { fetchJobListByDate } = useJob()
+
   const { deleteJobQuerry } = useJob()
 
     const [selectedName, setSelectedName] = useState(names[0]);
+
+    const [dateText, setDateText] = useState('')
+
+    
 
     const formatDate = (dateString) => {
       const date = new Date(dateString);
@@ -34,6 +40,16 @@ const JobQueries = () => {
       const handleManager = () => {
 
       }
+
+      const handleDateChange = (e) => {
+        setDateText(e.target.value)
+      }
+
+      const handleFilter  =() => {
+        console.log(dateText)
+        fetchJobListByDate(dateText)
+        
+      }
       
         return (
             <div className="px-4 sm:px-6 lg:px-8">
@@ -43,6 +59,11 @@ const JobQueries = () => {
                   <p className="mt-2 text-sm text-gray-700">
                     A list of all the Job Queries in your account.
                   </p>
+                </div>
+
+                <div className=' flex justify-center items-center gap-4'>
+                  <input value={dateText} onChange={handleDateChange} type="text" className=' w-28 h-10 bg-white border-2 border-red-500 text-red-600 px-1 py-2' placeholder='2024-06-21' />
+                  <button onClick={handleFilter} className=' w-20 h-10 text-red-500 border-2 border-red-500 px-1 py-2'>Filter</button>
                 </div>
                 
               </div>
@@ -83,7 +104,7 @@ const JobQueries = () => {
                       </thead>
                       <tbody className="divide-y divide-gray-200 bg-white">
                         {job?.map((person) => (
-                          <tr key={person.email}>
+                          <tr key={person.id}>
                             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
                               {person.id}
                             </td>

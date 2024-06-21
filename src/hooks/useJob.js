@@ -8,7 +8,7 @@ import Cookie from "universal-cookie";
 const cookie = new Cookie();
 
 const urllocal = "https://api.hamaracafe.in";
-// const urllive = "https://backerbackend.onrender.com";
+// const urllive = "http://localhost:8080/";
 
 
 
@@ -21,6 +21,27 @@ const useJob = () => {
       const fetchJobList = async () => {
         try {
           const response = await axios.get(`${urllocal}/admin/getallJob`,{
+                    headers: {
+                      ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
+                    },
+                  });
+          const jobData = response.data;
+          if(!jobData){
+            return dispatch(clearJob())
+          }
+
+          // console.log(jobData)
+          dispatch(setJob(jobData))
+        } catch (error) {
+          return dispatch(clearJob())
+        }
+      };
+
+      // fetch job list by date
+      const fetchJobListByDate = async (date) => {
+        console.log('in job list by date')
+        try {
+          const response = await axios.get(`${urllocal}/admin/getallJob/${date}`,{
                     headers: {
                       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : null),
                     },
@@ -106,7 +127,7 @@ const useJob = () => {
       };
 
     
-      return { fetchJobList, addJobRequest, deleteJobQuerry, ChangeJobManager };
+      return { fetchJobList, addJobRequest, deleteJobQuerry, ChangeJobManager, fetchJobListByDate };
 }
 
 export default useJob;

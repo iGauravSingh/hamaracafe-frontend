@@ -31,6 +31,7 @@ import useBanner from "../hooks/useBanner";
 import useFranchise from "../hooks/useFranchise";
 import ProfileFranchise from "./ProfileFranchise";
 import { format } from 'date-fns';
+import UnauthorizedFranchise from "./UnauthorizedFranchise";
 
 
 
@@ -63,7 +64,7 @@ const FranchiseDashboard = () => {
 //   const [bann, setBann] = useState([]);
 
 if (!franchise.franchise) {
-  return <Unauthorized />;
+  return <UnauthorizedFranchise />;
 }
 
 const { logout, fetchWorkList,fetchLetter } = useFranchise()

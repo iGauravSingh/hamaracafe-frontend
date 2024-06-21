@@ -26,6 +26,8 @@ import useLatest from "../hooks/useLatest";
 import useAdmin from "../hooks/useAdmin";
 import { useNavigate } from "react-router-dom";
 import Unauthorized from "./Unauthorized";
+import UnauthorizedAdminAffiliate from "./UnauthorizedAdminAffiliate";
+
 
 
 const AdminDashboard = () => {
@@ -37,7 +39,7 @@ const AdminDashboard = () => {
   // console.log('value of admi  from admin dash', admin.email)
 
   if (!admin) {
-    return <Unauthorized />;
+      return <UnauthorizedAdminAffiliate />; 
   }
 
   // logout

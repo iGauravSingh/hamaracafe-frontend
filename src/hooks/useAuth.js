@@ -6,7 +6,7 @@ import { clearUser, setUser } from "../features/userSlice";
 const cookie = new Cookie();
 
 const urllocal = "https://api.hamaracafe.in";
-const urllive = "https://backerbackend.onrender.com";
+// const urllive = "https://backerbackend.onrender.com";
 
 const useAuth = () => {
 
@@ -43,18 +43,7 @@ const useAuth = () => {
           return response.data;
     } catch (error) {
         return error
-        // if (error.response) {
-        //     // The request was made and the server responded with a status code
-        //     // that falls out of the range of 2xx
-        //     // console.log(error.response.data.errors[0].msg); // This will log your custom error response
-        //   } else if (error.request) {
-        //     // The request was made but no response was received
-        //     console.log(error.request);
-        //   } else {
-        //     // Something happened in setting up the request that triggered an Error
-        //     console.log('Error', error.message);
-        //   }
-        //   console.log(error.config);
+        
     }
   };
 
@@ -98,25 +87,73 @@ const useAuth = () => {
     }
   }
 
+  // const fetchUser = async () => {
+  //   const sessionToken = cookie.get("session_token");
+  //   try {
+  //     const response = await axios.get(`${urllocal}/affaliate/me`, {
+  //       headers: {
+  //         ...(sessionToken
+  //           ? { Authorization: `Bearer ${sessionToken}` }
+  //           : null),
+  //       },
+  //     });
+  //     const user = response.data;
+  //     console.log('from frtch user', user)
+      
+
+  //     if (!user) {
+  //       dispatch(clearUser());
+  //     } else {
+  //       dispatch(
+  //         setUser({
+  //           id: user.id,
+  //           email: user.email,
+  //           name: user.name,
+  //           mobile: user.mobile,
+  //           website: user.website,
+  //           youtube: user.youtube,
+  //           instagram: user.instagram,
+  //           affiliateCode: user.affiliateCode,
+  //           imageUrl: user.imageUrl,
+  //           totalClicks: user.totalClicks,
+  //           totalInquiry: user.totalInquiry,
+  //           workgoingon: user.workgoingon,
+  //           totalMoney: user.totalMoney,
+  //         })
+  //       );
+  //     }
+  //   } catch (error) {
+  //     dispatch(clearUser());
+      
+  //   } 
+  // };
+
   const fetchUser = async () => {
     const sessionToken = cookie.get("session_token");
+
+    if (!sessionToken) {
+      dispatch(clearUser());
+      return;
+    }
+
     try {
-      const response = await axios.get(`${urllocal}/auth/me`, {
+      const response = await axios.get(`${urllocal}/affaliate/me`, {
         headers: {
-          ...(sessionToken
-            ? { Authorization: `Bearer ${sessionToken}` }
-            : null),
+          Authorization: `Bearer ${sessionToken}`,
         },
       });
-      const user = response.data;
+
+      const { user } = response.data;
+      console.log('from frtch user', user)
 
       if (!user) {
-        return dispatch(clearUser());
+        dispatch(clearUser());
+      } else {
+        dispatch(setUser(user));
       }
-
-      dispatch(setUser({ email: user.email, username: user.username }));
     } catch (error) {
-      return dispatch(clearUser());
+      console.error("Error fetching user:", error);
+      dispatch(clearUser());
     }
   };
 

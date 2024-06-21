@@ -109,9 +109,12 @@ const AffaliateList = () => {
     setWorkValue((prevState) => prevState - 1);
   };
 
-  const handleUpdateWork = (id,work) => {
+  const handleUpdateWork = async (id,work) => {
     // console.log(id,work)
-    updateAffiliateWork(id,{workgoingon: work})
+    const repp = await updateAffiliateWork(id,{workgoingon: work})
+    if(repp){
+      alert("work updated successfully")
+    }
   }
 
   //
@@ -138,9 +141,12 @@ const AffaliateList = () => {
       setInquireValue((prevState) => prevState - 1);
     };
   
-    const handleUpdateinquire = (id,inquire) => {
+    const handleUpdateinquire = async (id,inquire) => {
       // console.log(id,inquire)
-      updateAffiliateInquiries(id,{totalInquiry: inquireValue})
+      const repp = updateAffiliateInquiries(id,{totalInquiry: inquireValue})
+      if(repp){
+        alert("Inquire updated successfully")
+      }
     }
   
     //
@@ -167,9 +173,12 @@ const AffaliateList = () => {
     setEarning((prevState) => prevState - 1);
   };
 
-  const handleUpdateEarning = (id,earn) => {
+  const handleUpdateEarning = async (id,earn) => {
     // console.log(id,earn)
-    updateAffiliatetotalEarning(id,{totalEarning: earn})
+    const repp = updateAffiliatetotalEarning(id,{totalEarning: earn})
+    if(repp){
+      alert("earning updated successfully")
+    }
   }
 
   //

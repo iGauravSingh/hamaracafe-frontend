@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Unauthorized = () => {
+const UnauthorizedFranchise = () => {
 
     const navigate = useNavigate()
 
@@ -18,7 +18,7 @@ const Unauthorized = () => {
                 <a href='https://hamaracafe.com/' className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition duration-300">
                     Go Home
                 </a>
-                <Link to='/signin' className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition duration-300">
+                <Link to='/franchisesignin' className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition duration-300">
                     Signin
                 </Link>
                 </div>
@@ -27,4 +27,4 @@ const Unauthorized = () => {
     );
 };
 
-export default Unauthorized;
+export default UnauthorizedFranchise;

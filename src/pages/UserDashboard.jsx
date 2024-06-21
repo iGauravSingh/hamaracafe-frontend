@@ -29,7 +29,70 @@ import useHelp from "../hooks/useHelp";
 import useWithdraw from "../hooks/useWithdraw";
 import useBanner from "../hooks/useBanner";
 
+import Cookie from "universal-cookie";
+
+const cookie = new Cookie();
+
 const UserDashboard = () => {
+
+  
+  const navigate = useNavigate();
+  
+  const { fetchUser } = useAuth();
+
+  const user = useSelector((state) => state.user.value);
+
+  // useEffect(() => {
+    
+  //   fetchUser()
+  // },[fetchUser])
+
+  if (!user.user) {
+    return (
+    
+      <Unauthorized />
+    ); 
+  }
+
+  // useEffect(() => {
+  //   // On component mount, check if user is present in Redux state
+  //   if (!user.user) {
+  //     const sessionToken = cookie.get('session_token');
+      
+  //     console.log(sessionToken)
+  //     if (!sessionToken) {
+  //       // If no session token, render Unauthorized component or redirect
+  //       // return <Unauthorized />;
+  //       console.log("Unauthorized: No session token found");
+  //     } else {
+  //       // Fetch user data using session token
+  //       console.log("fetching user data")
+  //       // fetchUser()
+  //       console.log("from checker", user.user)
+  //     }
+  //   }
+  // }, [user.user, fetchUser]);
+
+
+
+  // if (!user.user) {
+  //   return (
+    
+  //     <Unauthorized />
+  //   ); 
+  // }
+
+  // spinner 
+    // <div className={` h-screen flex items-center justify-center`}>
+      //   <div
+      //     className={`animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-red-500`}
+      //   ></div>
+      // </div>
+
+
+  //
+
+
   ///////toast state
   const [show, setShow] = useState(false);
 
@@ -43,9 +106,9 @@ const UserDashboard = () => {
 
   ////////
 
-  const navigate = useNavigate();
+  
 
-  const user = useSelector((state) => state.user.value);
+  
 
   const { latest, isLoading } = useSelector((state) => state.latest.value);
 
@@ -55,6 +118,14 @@ const UserDashboard = () => {
 
   const { getAllBanner } = useBanner();
   const [bann, setBann] = useState([]);
+
+
+  
+
+  
+
+  
+
 
   useEffect(() => {
     const fetchBannerData = async () => {
@@ -77,13 +148,27 @@ const UserDashboard = () => {
 
   const { logout } = useAuth();
 
+  
+
   //console.log(user.user)
 
- 
+ ///////// rough /////
+{/* <div className={` h-screen flex items-center justify-center border-2`}>
+        <div
+          className={`animate-spin rounded-full h-7 w-7 border-t-2 border-b-2 border-[#ef4444]`}
+        ></div>
+      </div> */}
+ ///// rough ////////////
 
-  if (!user.user) {
-    return <Unauthorized />;
-  }
+  // if (!user.user) {
+  //   const sessionToken = cookie.get("session_token");
+  //   console.log(sessionToken)
+  //   if(!sessionToken){
+  //     return <Unauthorized />;
+  //   } else {
+      
+  //   }
+  // }
 
   const userData = user?.user;
 
@@ -123,11 +208,11 @@ const UserDashboard = () => {
   const handleWithdrawRequest = async () => {
     setDraw(false);
     // check if drawAmt is more then net earning then send error
-    if(drawAmt === 0){
+    if(parseInt(drawAmt) === 0){
       alert("Invalid Amount!")
       return
     }
-    if(drawAmt > userData.totalMoney){
+    if(parseInt(drawAmt) > userData.totalMoney){
       alert("Cannot Withdraw More Then In Account!")
       return
     }
@@ -221,6 +306,8 @@ const UserDashboard = () => {
   const handleOpenEarning = () => setIsOpenEarning(true);
   const handleCloseEarning = () => setIsOpenEarning(false);
   //
+
+  
 
   return (
     <>

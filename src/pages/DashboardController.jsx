@@ -3,13 +3,14 @@ import FranchiseAdminDashboard from './FranchiseAdminDashboard'
 import AdminDashboard from './AdminDashboard'
 import { useSelector } from 'react-redux'
 import Unauthorized from './Unauthorized'
+import UnauthorizedAdminAffiliate from './UnauthorizedAdminAffiliate'
 
 const DashboardController = () => {
 
     const {admin} = useSelector((state) => state.admin.value)
 
     if (!admin) {
-        return <Unauthorized />;
+        return <UnauthorizedAdminAffiliate />;
       }
 
     // Dashboard state are aff , fra 
